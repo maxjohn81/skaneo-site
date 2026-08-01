@@ -499,7 +499,7 @@ section { padding: 96px 0; }
 }
 .operator-card:hover { transform: translateY(-6px) scale(1.015); box-shadow: var(--shadow-md); }
 
-.operator-card.yas    { background: linear-gradient(150deg, #fce40f, #d0f725); }
+.operator-card.yas    { background: linear-gradient(150deg, #fce40f, #f7d825); }
 .operator-card.orange { background: linear-gradient(150deg, #FF7A00, #E85C00); }
 .operator-card.airtel { background: linear-gradient(150deg, #E4002B, #A5001E); }
 
