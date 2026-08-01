@@ -39,6 +39,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
+  overflow-x: hidden;
   margin: 0;
   font-family: var(--font-body);
   color: var(--dark);
@@ -101,6 +102,16 @@ h1, h2, h3, h4 {
   font-size: 1rem;
   transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), background 0.3s var(--ease);
   white-space: nowrap;
+}
+
+.feature-icon svg {
+  width: 24px;
+  height: 24px;
+  color: var(--light);
+}
+
+.btn-icon {
+  flex-shrink: 0;
 }
 
 .btn-primary {
@@ -488,7 +499,7 @@ section { padding: 96px 0; }
 }
 .operator-card:hover { transform: translateY(-6px) scale(1.015); box-shadow: var(--shadow-md); }
 
-.operator-card.yas    { background: linear-gradient(150deg, #E8432E, #C22417); }
+.operator-card.yas    { background: linear-gradient(150deg, #fce40f, #d0f725); }
 .operator-card.orange { background: linear-gradient(150deg, #FF7A00, #E85C00); }
 .operator-card.airtel { background: linear-gradient(150deg, #E4002B, #A5001E); }
 
