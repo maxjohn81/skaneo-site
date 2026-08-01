@@ -1,6 +1,0 @@
-Place ton vrai fichier APK ici, nommé exactement :
-
-    Skaneo-v1.0.0.apk
-
-Chemin final attendu : apk/Skaneo-v1.0.0.apk
-Le bouton de téléchargement du site pointe déjà vers ce chemin.
