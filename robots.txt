@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://skaneo.vercel.app/sitemap.xml

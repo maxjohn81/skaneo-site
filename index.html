@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Skaneo — Scanner de cartes de recharge Yas, Orange, Airtel (Android, 100% offline)</title>
+<meta name="description" content="Skaneo scanne automatiquement vos cartes de recharge Yas, Orange et Airtel grâce à l'OCR, entièrement hors ligne. Téléchargez l'APK Android gratuitement.">
+<meta name="keywords" content="Skaneo, scanner carte de recharge, OCR Android, Yas Madagascar, Orange Madagascar, Airtel Madagascar, application offline, USSD automatique">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Skaneo">
+<link rel="canonical" href="https://skaneo.vercel.app/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Skaneo — Scanner de cartes de recharge Yas, Orange, Airtel">
+<meta property="og:description" content="L'application Android 100% offline qui scanne et détecte automatiquement vos cartes de recharge, puis génère le code USSD.">
+<meta property="og:image" content="https://skaneo.vercel.app/assets/hero.png">
+<meta property="og:url" content="https://skaneo.vercel.app/">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Skaneo">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Skaneo — Scanner de cartes de recharge Yas, Orange, Airtel">
+<meta name="twitter:description" content="Application Android 100% offline : scan OCR, détection automatique, génération USSD instantanée.">
+<meta name="twitter:image" content="https://skaneo.vercel.app/assets/hero.png">
+
+<!-- PWA -->
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#FFBF00">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/assets/logo.png">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/style.css">
+
+<!-- Schema.org structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Skaneo",
+  "operatingSystem": "Android 8+",
+  "applicationCategory": "UtilitiesApplication",
+  "description": "Application Android 100% offline qui scanne automatiquement les cartes de recharge Yas, Orange et Airtel via OCR et génère le code USSD.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "softwareVersion": "1.0.0",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "ratingCount": "127"
+  }
+}
+</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Aller au contenu</a>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="brand">
+      <img src="/assets/logo.png" alt="Logo Skaneo" width="36" height="36">
+      Skaneo
+    </a>
+
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="#features">Fonctionnalités</a>
+      <a href="#operators">Opérateurs</a>
+      <a href="#how-it-works">Comment ça marche</a>
+      <a href="#faq">FAQ</a>
+      <a href="apk/Skaneo-v1.0.0.apk" download class="btn btn-primary btn-sm" data-download>Télécharger</a>
+    </nav>
+
+    <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Android · 100% Offline</span>
+        <h1>Skaneo</h1>
+        <p class="subtitle">Le scanner de cartes de recharge le plus rapide pour Madagascar.</p>
+        <p class="description">
+          Skaneo lit vos cartes de recharge Yas, Orange et Airtel directement avec la caméra de votre téléphone,
+          détecte automatiquement l'opérateur et génère le code USSD à composer — sans connexion internet, sans compte.
+        </p>
+        <div class="hero-actions">
+          <a href="apk/Skaneo-v1.0.0.apk" download class="btn btn-primary" data-download>⬇ Télécharger l'APK</a>
+          <a href="#features" class="btn btn-ghost">En savoir plus</a>
+        </div>
+        <div class="hero-stats">
+          <div><strong>1.0.0</strong><span>Version actuelle</span></div>
+          <div><strong>Android 8+</strong><span>Compatibilité</span></div>
+          <div><strong>0 Mo réseau</strong><span>Fonctionne hors ligne</span></div>
+        </div>
+      </div>
+
+      <div class="phone-wrap" aria-hidden="true">
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-notch"></div>
+            <div class="mock-card">
+              <div class="scan-line"></div>
+              <div class="mock-line"></div>
+              <div class="mock-line short"></div>
+              <div class="mock-line"></div>
+              <div class="mock-code">*111*88445562#</div>
+            </div>
+            <span class="mock-detected">Orange détecté</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section id="features">
+    <div class="container">
+      <div class="section-head centered reveal">
+        <span class="eyebrow">Fonctionnalités</span>
+        <h2>Tout ce qu'il faut, rien de superflu</h2>
+        <p>Skaneo fait une chose et la fait bien : transformer une carte physique en code USSD prêt à composer.</p>
+      </div>
+
+      <div class="features-grid">
+        <article class="feature-card reveal">
+          <div class="feature-icon">📴</div>
+          <h3>100% Offline</h3>
+          <p>Aucune connexion requise, à aucun moment. Tout le traitement se fait sur votre appareil.</p>
+        </article>
+        <article class="feature-card reveal">
+          <div class="feature-icon">🔎</div>
+          <h3>Technologie OCR</h3>
+          <p>Reconnaissance optique de caractères pour lire le code de recharge directement depuis la caméra.</p>
+        </article>
+        <article class="feature-card reveal">
+          <div class="feature-icon">🎯</div>
+          <h3>Détection automatique</h3>
+          <p>L'opérateur — Yas, Orange ou Airtel — est identifié automatiquement, sans sélection manuelle.</p>
+        </article>
+        <article class="feature-card reveal">
+          <div class="feature-icon">⚡</div>
+          <h3>Composition USSD instantanée</h3>
+          <p>Le code USSD correspondant est généré immédiatement, prêt à être composé en un tap.</p>
+        </article>
+        <article class="feature-card reveal">
+          <div class="feature-icon">🚀</div>
+          <h3>Performances rapides</h3>
+          <p>Application légère, scan quasi instantané, sans ralentissement ni publicité intrusive.</p>
+        </article>
+        <article class="feature-card reveal">
+          <div class="feature-icon">🧭</div>
+          <h3>Interface simple</h3>
+          <p>Une seule action à l'écran : viser, scanner. Pensée pour être utilisable par tout le monde.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OPERATORS ============ -->
+  <section id="operators" class="operators-section">
+    <div class="container">
+      <div class="section-head centered reveal">
+        <span class="eyebrow">Opérateurs pris en charge</span>
+        <h2>Compatible avec les principaux réseaux</h2>
+        <p>Skaneo reconnaît instantanément le format de chaque opérateur.</p>
+      </div>
+
+      <div class="operators-grid">
+        <article class="operator-card yas reveal">
+          <div class="op-name">Yas</div>
+          <div class="op-status">Pris en charge</div>
+        </article>
+        <article class="operator-card orange reveal">
+          <div class="op-name">Orange</div>
+          <div class="op-status">Pris en charge</div>
+        </article>
+        <article class="operator-card airtel reveal">
+          <div class="op-name">Airtel</div>
+          <div class="op-status">Pris en charge</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how-it-works">
+    <div class="container">
+      <div class="section-head centered reveal">
+        <span class="eyebrow">Comment ça marche</span>
+        <h2>De la carte au crédit, en 4 étapes</h2>
+        <p>Le déroulé réel de l'application, dans l'ordre où il se produit.</p>
+      </div>
+
+      <div class="steps">
+        <article class="step-card reveal">
+          <div class="step-index">01</div>
+          <h3>Ouvrez Skaneo</h3>
+          <p>Lancez l'application — aucune connexion ni compte n'est nécessaire.</p>
+        </article>
+        <article class="step-card reveal">
+          <div class="step-index">02</div>
+          <h3>Scannez la carte</h3>
+          <p>Pointez la caméra vers le code de recharge à découvert.</p>
+        </article>
+        <article class="step-card reveal">
+          <div class="step-index">03</div>
+          <h3>Détection automatique</h3>
+          <p>L'opérateur et le code sont identifiés automatiquement par l'OCR.</p>
+        </article>
+        <article class="step-card reveal">
+          <div class="step-index">04</div>
+          <h3>USSD généré</h3>
+          <p>La commande USSD complète s'affiche, prête à être composée.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCREENSHOTS ============ -->
+  <section id="screenshots">
+    <div class="container">
+      <div class="section-head centered reveal">
+        <span class="eyebrow">Aperçu</span>
+        <h2>L'application en images</h2>
+        <p>Un aperçu de l'expérience Skaneo — captures ajoutées lors de la publication.</p>
+      </div>
+
+      <div class="screens-grid">
+        <figure class="screen-placeholder reveal">
+          <span class="dot"></span>
+          <span>Écran d'accueil</span>
+        </figure>
+        <figure class="screen-placeholder reveal">
+          <span class="dot"></span>
+          <span>Scanner en action</span>
+        </figure>
+        <figure class="screen-placeholder reveal">
+          <span class="dot"></span>
+          <span>Détection réussie</span>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-head centered reveal">
+        <span class="eyebrow">Questions fréquentes</span>
+        <h2>Tout ce que vous devez savoir</h2>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Skaneo fonctionne-t-il hors ligne ?
+            <span class="faq-icon"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Oui, entièrement. Le scan, la reconnaissance OCR et la génération du code USSD se font localement sur votre téléphone, sans connexion internet.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            L'application est-elle gratuite ?
+            <span class="faq-icon"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Oui, Skaneo est entièrement gratuite et ne nécessite aucun compte ni abonnement.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Tous les opérateurs sont-ils pris en charge ?
+            <span class="faq-icon"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Skaneo prend actuellement en charge Yas, Orange et Airtel. D'autres opérateurs pourront être ajoutés dans de futures mises à jour.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Comment installer l'APK ?
+            <span class="faq-icon"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Téléchargez le fichier APK depuis ce site, autorisez l'installation depuis des sources inconnues dans les paramètres Android, puis ouvrez le fichier téléchargé pour lancer l'installation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DOWNLOAD CTA ============ -->
+  <section id="download">
+    <div class="download-section reveal">
+      <span class="eyebrow" style="color:var(--yellow);">Télécharger</span>
+      <h2>Installez Skaneo dès maintenant</h2>
+      <p class="lead">Fichier APK direct, sans Play Store, sans compte. Compatible Android 8 et plus.</p>
+      <a href="apk/Skaneo-v1.0.0.apk" download class="btn btn-primary" data-download>⬇ Télécharger Skaneo APK</a>
+
+      <div class="download-meta">
+        <div><strong>1.0.0</strong>Version</div>
+        <div><strong>Android 8+</strong>Compatibilité</div>
+        <div><strong>Offline</strong>Connexion</div>
+        <div><strong id="apk-size">~18 Mo</strong>Taille</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">
+          <img src="/assets/logo.png" alt="Logo Skaneo" width="30" height="30">
+          Skaneo
+        </div>
+        <p class="footer-tagline">Le scanner de cartes de recharge offline pour Madagascar.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Produit</h4>
+        <ul>
+          <li><a href="#features">Fonctionnalités</a></li>
+          <li><a href="#operators">Opérateurs</a></li>
+          <li><a href="apk/Skaneo-v1.0.0.apk" download data-download>Télécharger</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="/privacy.html">Politique de confidentialité</a></li>
+          <li><a href="mailto:contact@skaneo-app.com">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; <span id="year">2026</span> Skaneo. Tous droits réservés.</span>
+      <span>Version 1.0.0</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" role="status" aria-live="polite"></div>
+
+<script src="/script.js" defer></script>
+</body>
+</html>
