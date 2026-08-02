@@ -153,4 +153,53 @@
    * ----------------------------------------------------- */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+
+
+
+
+
+/* -------------------------------------------------------
+   * 10. Connexion Google optionnelle (Supabase Auth)
+   * ----------------------------------------------------- */
+  var SUPABASE_URL = "https://nngfkvzupvskphydhxyg.supabase.co";
+  var SUPABASE_ANON_KEY = "sb_publishable_ZK5KDZSt5OgJHMxofw9rcw_2zquNzMX";
+
+  if (window.supabase) {
+    var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    var loginBtn = document.getElementById("login-btn");
+    var loginLabel = document.getElementById("login-label");
+
+    function updateLoginUI(session) {
+      if (session && session.user) {
+        var name = session.user.user_metadata.full_name || session.user.email;
+        loginLabel.textContent = name.split(" ")[0];
+      } else {
+        loginLabel.textContent = "Se connecter";
+      }
+    }
+
+    sb.auth.getSession().then(function (res) {
+      updateLoginUI(res.data.session);
+    });
+
+    sb.auth.onAuthStateChange(function (_event, session) {
+      updateLoginUI(session);
+    });
+
+    if (loginBtn) {
+      loginBtn.addEventListener("click", async function () {
+        var { data } = await sb.auth.getSession();
+        if (data.session) {
+          await sb.auth.signOut();
+        } else {
+          await sb.auth.signInWithOAuth({
+            provider: "google",
+            options: { redirectTo: window.location.origin }
+          });
+        }
+      });
+    }
+  }
+
 })();
