@@ -198,13 +198,14 @@ h4 {
 
 /* ---- Header ------------------------------------------------------------ */
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
   z-index: 200;
   background: rgba(248, 250, 252, 0.85);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid transparent;
   transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  width: 100%;
 }
 
 .site-header.scrolled {
