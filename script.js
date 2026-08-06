@@ -18,6 +18,21 @@
     onScroll();
   }
 
+  // ------------------------------------------------------------
+
+  async function loadDownloads() {
+    try {
+      const response = await fetch("/api/stats");
+      const data = await response.json();
+
+      document.getElementById("downloads").textContent = data.downloads;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  loadDownloads();
+
   /* -------------------------------------------------------
    * 2. Mobile nav toggle
    * ----------------------------------------------------- */
@@ -159,9 +174,9 @@
 
 
 
-/* -------------------------------------------------------
-   * 10. Connexion Google optionnelle (Supabase Auth)
-   * ----------------------------------------------------- */
+  /* -------------------------------------------------------
+     * 10. Connexion Google optionnelle (Supabase Auth)
+     * ----------------------------------------------------- */
   var SUPABASE_URL = "https://nngfkvzupvskphydhxyg.supabase.co";
   var SUPABASE_ANON_KEY = "sb_publishable_ZK5KDZSt5OgJHMxofw9rcw_2zquNzMX";
 
