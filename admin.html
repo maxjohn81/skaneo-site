@@ -1,23 +1,65 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statistiques Skaneo</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
 </head>
+
 <body>
 
-    <div class="card">
-        <h1>📊 Tableau de bord</h1>
+    <div class="page">
+        <div class="brand">
+            <div class="brand-dot"></div>
+            <span>Skaneo</span>
+        </div>
 
-        <h2 id="downloads" class="txt">Chargement...</h2>
+        <div class="card">
+            <div class="card-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="12" width="4" height="9" rx="1" fill="currentColor" />
+                    <rect x="10" y="7" width="4" height="14" rx="1" fill="currentColor" />
+                    <rect x="17" y="3" width="4" height="18" rx="1" fill="currentColor" />
+                </svg>
+            </div>
+            <p class="eyebrow">Tableau de bord</p>
+            <h1>Téléchargements</h1>
 
-        <button onclick="loadStats()">
-            Actualiser
-        </button>
+            <h2 id="downloads" class="stat">
+                <span class="skeleton"></span>
+            </h2>
+
+            <button onclick="loadStats()" id="refreshBtn">
+                <svg class="refresh-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M4 4V9H4.582M20 20V15H19.418M19.418 15C18.9721 16.1128 18.2039 17.0777 17.2039 17.7818C16.2038 18.4858 15.0166 18.8988 13.7847 18.9718C12.5528 19.0448 11.3251 18.7749 10.2451 18.1935C9.16515 17.6121 8.27544 16.7418 7.68 15.681M4.582 9C5.02786 7.88718 5.79614 6.92231 6.79619 6.21823C7.79624 5.51415 8.98338 5.10118 10.2153 5.02818C11.4472 4.95517 12.6749 5.22512 13.7549 5.80652C14.8349 6.38793 15.7246 7.25817 16.32 8.319"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Actualiser
+            </button>
+
+            <p class="updated" id="lastUpdated"></p>
+        </div>
+
+        <p class="footer">© 2026 Skaneo · Admin</p>
     </div>
 
     <script src="admin.js"></script>
+    <script>
+        // Petit helper facultatif pour horodater le dernier refresh,
+        // à ignorer si ta logique dans admin.js gère déjà ça
+        const _origLoadStats = window.loadStats;
+        document.addEventListener('DOMContentLoaded', () => {
+            const el = document.getElementById('lastUpdated');
+            if (el) el.textContent = 'Dernière mise à jour à ' + new Date().toLocaleTimeString('fr-FR');
+        });
+    </script>
 
 </body>
+
 </html>

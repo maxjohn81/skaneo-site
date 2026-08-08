@@ -1,0 +1,201 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background:
+        radial-gradient(circle at 15% 10%, rgba(255, 191, 0, 0.10), transparent 40%),
+        radial-gradient(circle at 85% 90%, rgba(255, 191, 0, 0.08), transparent 40%),
+        #F8FAFC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 380px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 800;
+    font-size: 15px;
+    color: #1E293B;
+    letter-spacing: -0.2px;
+}
+
+.brand-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #FFBF00;
+    box-shadow: 0 0 0 4px rgba(255, 191, 0, 0.18);
+}
+
+.card {
+    width: 100%;
+    background: #FFFFFF;
+    padding: 40px 32px 32px;
+    border-radius: 24px;
+    border: 1px solid #EEF2F6;
+    box-shadow:
+        0 1px 2px rgba(15, 23, 42, 0.04),
+        0 12px 32px rgba(15, 23, 42, 0.08);
+    text-align: center;
+    animation: rise 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card-icon {
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 16px;
+    border-radius: 16px;
+    background: #FFF9E6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #B8860B;
+}
+
+.card-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    color: #B8860B;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 4px;
+}
+
+h1 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #64748B;
+    margin-bottom: 20px;
+}
+
+.stat {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    color: #1E293B;
+    line-height: 1;
+    margin-bottom: 28px;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.stat-error {
+    color: #DC2626;
+}
+
+.skeleton {
+    display: inline-block;
+    width: 90px;
+    height: 40px;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 20px;
+    background: #FFBF00;
+    color: #1E293B;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+    box-shadow: 0 4px 14px rgba(255, 191, 0, 0.35);
+}
+
+button:hover {
+    background: #F5B700;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(255, 191, 0, 0.45);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button:active .refresh-icon {
+    transform: rotate(180deg);
+}
+
+button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+button.loading .refresh-icon {
+    animation: spin 0.8s linear infinite;
+}
+
+.refresh-icon {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.updated {
+    margin-top: 16px;
+    font-size: 12px;
+    color: #94A3B8;
+}
+
+.footer {
+    font-size: 12px;
+    color: #94A3B8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card, .refresh-icon, .skeleton, button, .stat {
+        animation: none;
+        transition: none;
+    }
+}
