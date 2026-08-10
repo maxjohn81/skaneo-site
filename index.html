@@ -462,6 +462,15 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="/script.js" defer></script>
+  <script>
+    (function trackVisit() {
+      if (sessionStorage.getItem("skaneo_visited")) return;
+
+      fetch("/api/track-visit", { method: "POST" })
+        .then(() => sessionStorage.setItem("skaneo_visited", "1"))
+        .catch(() => { }); // silencieux si ça échoue, pas critique
+    })();
+  </script>
 </body>
 
 </html>

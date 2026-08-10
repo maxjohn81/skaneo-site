@@ -1,5 +1,6 @@
 async function loadStats() {
-    const statEl = document.getElementById("downloads");
+    const downloadsEl = document.getElementById("downloads");
+    const visitsEl = document.getElementById("visits");
     const btn = document.getElementById("refreshBtn");
     const updatedEl = document.getElementById("lastUpdated");
 
@@ -14,18 +15,22 @@ async function loadStats() {
         }
 
         const data = await response.json();
-        const formatted = new Intl.NumberFormat("fr-FR").format(data.downloads);
+        const nf = new Intl.NumberFormat("fr-FR");
 
-        statEl.textContent = formatted;
-        statEl.classList.remove("stat-error");
+        downloadsEl.textContent = nf.format(data.downloads);
+        visitsEl.textContent = nf.format(data.visits);
+        downloadsEl.classList.remove("stat-error");
+        visitsEl.classList.remove("stat-error");
 
         if (updatedEl) {
             updatedEl.textContent =
                 "Dernière mise à jour à " + new Date().toLocaleTimeString("fr-FR");
         }
     } catch (error) {
-        statEl.textContent = "—";
-        statEl.classList.add("stat-error");
+        downloadsEl.textContent = "—";
+        visitsEl.textContent = "—";
+        downloadsEl.classList.add("stat-error");
+        visitsEl.classList.add("stat-error");
 
         if (updatedEl) {
             updatedEl.textContent = "Erreur de chargement";
