@@ -128,8 +128,8 @@
   });
 
   /* -------------------------------------------------------
-   * 6. Toast helper (used to confirm download start)
-   * ----------------------------------------------------- */
+ * 6. Toast helper (used to confirm download start)
+ * ----------------------------------------------------- */
   var toastEl = document.querySelector(".toast");
   function showToast(message) {
     if (!toastEl) return;
@@ -141,12 +141,93 @@
     }, 2800);
   }
 
+  /* -------------------------------------------------------
+   * 6bis. Modale CGU avant téléchargement de l'APK
+   * ----------------------------------------------------- */
+  var CGU_STORAGE_KEY = "skaneo_cgu_accepted";
+  var modalOverlay = null;
+  var downloadUrlEnAttente = null;
+
+  function creerModalCGU() {
+    var overlay = document.createElement("div");
+    overlay.className = "cgu-modal-overlay";
+    overlay.innerHTML =
+      '<div class="cgu-modal" role="dialog" aria-modal="true" aria-labelledby="cgu-modal-title">' +
+      '<h3 id="cgu-modal-title">Avant de télécharger</h3>' +
+      '<p>Skaneo scanne vos cartes de recharge et permet des retraits Mobile Money. Merci de lire nos ' +
+      '<a href="/cgu.html" target="_blank" rel="noopener">Conditions Générales d\'Utilisation</a> avant de continuer.</p>' +
+      '<label class="cgu-modal-check">' +
+      '<input type="checkbox" id="cgu-accept-checkbox">' +
+      'J\'ai lu et j\'accepte les Conditions Générales d\'Utilisation' +
+      '</label>' +
+      '<div class="cgu-modal-actions">' +
+      '<button type="button" class="btn btn-ghost btn-sm" id="cgu-cancel-btn">Annuler</button>' +
+      '<button type="button" class="btn btn-primary btn-sm" id="cgu-confirm-btn" disabled>Télécharger</button>' +
+      '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    var checkbox = overlay.querySelector("#cgu-accept-checkbox");
+    var confirmBtn = overlay.querySelector("#cgu-confirm-btn");
+    var cancelBtn = overlay.querySelector("#cgu-cancel-btn");
+
+    checkbox.addEventListener("change", function () {
+      confirmBtn.disabled = !checkbox.checked;
+    });
+
+    confirmBtn.addEventListener("click", function () {
+      localStorage.setItem(CGU_STORAGE_KEY, "1");
+      fermerModalCGU();
+      lancerTelechargement(downloadUrlEnAttente);
+    });
+
+    cancelBtn.addEventListener("click", fermerModalCGU);
+
+    overlay.addEventListener("click", function (e) {
+      if (e.target === overlay) fermerModalCGU();
+    });
+
+    return overlay;
+  }
+
+  function ouvrirModalCGU() {
+    if (!modalOverlay) {
+      modalOverlay = creerModalCGU();
+    }
+    modalOverlay.classList.add("show");
+    document.body.style.overflow = "hidden";
+  }
+
+  function fermerModalCGU() {
+    if (!modalOverlay) return;
+    modalOverlay.classList.remove("show");
+    document.body.style.overflow = "";
+
+    var checkbox = modalOverlay.querySelector("#cgu-accept-checkbox");
+    var confirmBtn = modalOverlay.querySelector("#cgu-confirm-btn");
+    if (checkbox) checkbox.checked = false;
+    if (confirmBtn) confirmBtn.disabled = true;
+  }
+
+  function lancerTelechargement(url) {
+    if (!url) return;
+    showToast("Téléchargement de Skaneo lancé…");
+    window.location.href = url;
+  }
+
   document.querySelectorAll('a[data-download]').forEach(function (link) {
-    link.addEventListener("click", function () {
-      showToast("Téléchargement de Skaneo lancé…");
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+      downloadUrlEnAttente = link.getAttribute("href");
+
+      if (localStorage.getItem(CGU_STORAGE_KEY) === "1") {
+        lancerTelechargement(downloadUrlEnAttente);
+        return;
+      }
+
+      ouvrirModalCGU();
     });
   });
-
   /* -------------------------------------------------------
    * 7. Smooth-scroll for in-page anchors (with header offset)
    * ----------------------------------------------------- */

@@ -74,8 +74,15 @@ body {
 }
 
 @keyframes rise {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .eyebrow {
@@ -168,8 +175,13 @@ h1 {
 }
 
 @keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 button {
@@ -216,8 +228,13 @@ button.loading .refresh-icon {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .updated {
@@ -232,7 +249,12 @@ button.loading .refresh-icon {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card, .refresh-icon, .skeleton, button, .stat {
+
+  .card,
+  .refresh-icon,
+  .skeleton,
+  button,
+  .stat {
     animation: none;
     transition: none;
   }

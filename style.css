@@ -1003,6 +1003,87 @@ section {
   transform: translateX(-50%) translateY(0);
 }
 
+/* ---- Modale CGU avant téléchargement ----------------------------------- */
+.cgu-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease);
+  z-index: 1000;
+}
+
+.cgu-modal-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cgu-modal {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 30px 28px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(14px);
+  transition: transform 0.25s var(--ease);
+}
+
+.cgu-modal-overlay.show .cgu-modal {
+  transform: translateY(0);
+}
+
+.cgu-modal h3 {
+  font-size: 1.15rem;
+  margin-bottom: 12px;
+}
+
+.cgu-modal p {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin: 0 0 18px;
+}
+
+.cgu-modal p a {
+  color: var(--orange);
+  font-weight: 600;
+}
+
+.cgu-modal-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--dark);
+  cursor: pointer;
+  margin-bottom: 22px;
+}
+
+.cgu-modal-check input {
+  margin-top: 3px;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.cgu-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cgu-modal-actions .btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
 /* ---- Skip link (accessibility) ------------------------------------------ */
 .skip-link {
   position: absolute;
