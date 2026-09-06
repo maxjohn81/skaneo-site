@@ -1,90 +1,86 @@
-markdown
-# Skaneo — Landing page statique (Vercel)
+<div align="center">📱 Skaneo
 
-Site HTML/CSS/JS vanilla, sans framework, avec quelques fonctions serverless légères (compteur de téléchargements), prêt à déployer sur Vercel.
+Le scanner intelligent qui simplifie vos recharges mobiles
 
-## Déployer sur Vercel — étape par étape
+<img src="https://img.shields.io/badge/Skaneo-Mobile%20Assistant-orange?style=for-the-badge" /><br/>Scannez. Simplifiez. Gagnez du temps.
 
-### Option A — sans ligne de commande (recommandé)
-1. Va sur [vercel.com](https://vercel.com) et connecte-toi (compte gratuit).
-2. Clique sur **Add New → Project**.
-3. Choisis **"Deploy without Git"** / glisse-dépose directement le dossier `skaneo-vercel` (ou importe-le depuis un dépôt GitHub — voir Option B).
-4. Vercel détecte les fonctions dans `api/` automatiquement : aucune commande de build n'est nécessaire (laisse "Build Command" et "Output Directory" vides).
-5. Clique sur **Deploy**. En quelques secondes, ton site est en ligne sur une URL `*.vercel.app`.
+Skaneo est une solution pensée pour rendre les opérations mobiles quotidiennes plus rapides et plus simples grâce à une expérience intuitive.
 
-### Option B — via GitHub (recommandé pour les mises à jour futures)
-1. Crée un nouveau dépôt GitHub et pousse le contenu de `skaneo-vercel/` à la racine du dépôt.
-2. Sur [vercel.com](https://vercel.com) : **Add New → Project → Import Git Repository**.
-3. Sélectionne ton dépôt. Framework Preset : **Other**. Build Command : vide. Output Directory : `.`
-4. Clique sur **Deploy**.
+</div>---
 
-### Option C — via la CLI Vercel
-```bash
-npm install -g vercel
-cd skaneo-vercel
-vercel --prod
-```
+🌟 À propos de Skaneo
 
-## Variables d'environnement requises
+Skaneo est une application conçue pour faciliter l'utilisation des services mobiles au quotidien.
 
-Le compteur de téléchargements (`api/download.js` et `api/stats.js`) utilise Redis. À configurer dans **Vercel → Project Settings → Environment Variables** :
+Elle propose une expérience moderne qui réduit les manipulations complexes et accompagne les utilisateurs dans leurs actions grâce à une interface simple, rapide et accessible.
 
-- `REDIS_URL` (ou les variables équivalentes selon le provider Redis utilisé)
+L'objectif de Skaneo est de transformer des tâches répétitives en actions plus naturelles et plus fluides.
 
-Sans cette configuration, `/api/download` et `/api/stats` renverront une erreur.
+---
 
-## Avant de déployer : à personnaliser
+🚀 Notre vision
 
-1. **APK réel** : place ton fichier APK dans `apk/`, nommé exactement `Skaneo-v1.0.1.apk`. Vérifie que le nom correspond bien à celui utilisé dans `api/download.js`.
-2. **Domaine** : une fois ton domaine final connu (ex: `skaneo.app`), remplace `https://skaneo.vercel.app` par ta vraie URL dans :
-   - `index.html`, `createur.html`, `cgu.html`, `privacy.html` (balises `canonical`, Open Graph, Twitter, JSON-LD)
-   - `robots.txt`
-   - `sitemap.xml`
-3. **Captures d'écran** : remplace les fichiers dans `assets/screenshots/` par de vraies images à jour (incluant les nouvelles fonctionnalités : multi-scan, retrait Mobile Money, import photo, sélecteur de langue).
-4. **Taille de l'APK** : mets à jour le texte de taille dans la section téléchargement avec la taille réelle du fichier `Skaneo-v1.0.1.apk`.
-5. **Contact / email** : vérifie que l'adresse de contact est correcte dans `createur.html`, `cgu.html` et `privacy.html`.
+Aujourd'hui, de nombreuses opérations mobiles demandent plusieurs étapes et une saisie manuelle qui peut entraîner des erreurs.
 
-## Structure du projet
+Skaneo imagine une nouvelle manière d'interagir avec ces services :
 
-index.html → page d'accueil, toutes les sections
-createur.html → page à propos du créateur
-cgu.html → Conditions Générales d'Utilisation
-privacy.html → politique de confidentialité
-style.css → design system complet (tokens, composants, modale CGU)
-createur.css → styles spécifiques à la page créateur
-script.js → interactions (menu, FAQ, reveal au scroll, ripple, modale CGU avant téléchargement, compteur de téléchargements)
-manifest.webmanifest → PWA (installable sur mobile)
-robots.txt / sitemap.xml → SEO
-favicon_96x96.ico → icône d'onglet
-api/download.js → redirige vers l'APK et incrémente le compteur Redis
-api/stats.js → renvoie le nombre total de téléchargements (JSON)
-apk/Skaneo-v1.0.1.apk → fichier à télécharger
-assets/logo.png → logo Skaneo
-assets/hero.png → variante logo haute résolution
-assets/creator.png → photo du créateur
-assets/screenshots/ → captures d'écran de l'application
+✨ Plus simple
+⚡ Plus rapide
+📱 Plus accessible
+🎯 Plus intuitive
 
+Nous voulons créer des outils qui rapprochent la technologie des besoins réels des utilisateurs.
 
-## Fonctionnalités de l'application couvertes par le site (v1.0.1)
+---
 
-- Scan OCR de cartes de recharge Yas, Orange, Airtel
-- Multi-scan (plusieurs cartes à la suite)
-- Import d'une photo depuis la galerie
-- Détection automatique de l'opérateur et génération du code USSD
-- Retrait Mobile Money multi-opérateurs (numéro + montant)
-- Interface disponible en français et en malgache
-- 100% hors ligne, sans compte requis
+💡 L'expérience Skaneo
 
-## Consentement CGU avant téléchargement
+Avec Skaneo, l'utilisateur bénéficie d'une expérience pensée autour de la simplicité :
 
-Le premier clic sur un lien de téléchargement de l'APK ouvre une modale demandant l'acceptation des CGU (`cgu.html`) avant de lancer le téléchargement. Le choix est mémorisé en `localStorage` (`skaneo_cgu_accepted`) pour ne plus redemander sur les visites suivantes. Logique dans `script.js`, styles dans `style.css` (section `.cgu-modal-*`).
+<div align="center">📷 Une interaction naturelle
+<br/>
+⬇️
+✨ Une expérience fluide
+<br/>
+⬇️
+🚀 Une utilisation plus rapide au quotidien
 
-## Performance & SEO déjà en place
+</div>---
 
-- Aucune dépendance externe hors Google Fonts (préconnectées) et Supabase (auth optionnelle).
-- CSS/JS natifs, pas de framework, poids minimal.
-- Attributs `alt` sur toutes les images, hiérarchie de titres correcte (`h1` unique, `h2`/`h3` en cascade).
-- `prefers-reduced-motion` respecté.
-- Focus clavier visible sur tous les éléments interactifs.
-- Données structurées `SoftwareApplication` (JSON-LD) pour un meilleur affichage dans les résultats de recherche.
-- Compteur de téléchargements en temps réel via Redis.
+🎨 Une interface pensée pour tous
+
+Skaneo privilégie :
+
+- Une navigation claire
+- Une expérience agréable
+- Une prise en main rapide
+- Un design moderne
+- Une utilisation adaptée aux besoins du quotidien
+
+Chaque détail est pensé pour rendre l'utilisation plus confortable.
+
+---
+
+🌍 Notre objectif
+
+Skaneo a pour ambition de devenir un compagnon numérique utile dans la vie quotidienne.
+
+Nous construisons une expérience qui met la simplicité au centre, afin que chacun puisse profiter pleinement des possibilités offertes par la technologie.
+
+---
+
+🔮 L'avenir de Skaneo
+
+Skaneo continue d'évoluer avec une vision claire :
+
+Créer des solutions intelligentes, accessibles et utiles qui améliorent les petites actions du quotidien.
+
+Chaque amélioration nous rapproche d'une expérience encore plus simple et plus efficace.
+
+---
+
+<div align="center">✨ Skaneo
+
+La technologie simplifiée pour votre quotidien.
+
+</div>
