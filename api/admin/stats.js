@@ -1,5 +1,5 @@
-import { isAuthenticated } from "./_auth.js";
-import { redis } from "./redis.js";
+import { isAuthenticated } from "../lib/auth.js";
+import { redis } from "../lib/redis.js";
 
 const DAY = 24 * 60 * 60 * 1000;
 

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skaneo Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/admin/styles.css">
+</head>
+
+<body>
+    <div id="loginPanel" class="login-page">
+        <div class="login-card">
+            <div class="brand"><div class="brand-dot"></div><span>Skaneo</span></div>
+            <p class="eyebrow">Espace privé</p>
+            <h1>Connexion admin</h1>
+            <form id="loginForm">
+                <label for="password">Mot de passe</label>
+                <input id="password" name="password" type="password" autocomplete="current-password" required>
+                <p id="loginError" class="form-error" role="alert"></p>
+                <button type="submit">Se connecter</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="dashboardPanel" class="admin-shell" hidden>
+        <aside class="sidebar">
+            <div class="sidebar-brand"><div class="brand-dot"></div><strong>Skaneo</strong></div>
+            <nav aria-label="Navigation admin">
+                <a class="nav-link active" href="#overview">Vue d'ensemble</a>
+                <a class="nav-link" href="#downloads">Téléchargements</a>
+                <a class="nav-link" href="#visits">Visites</a>
+                <a class="nav-link is-disabled" href="#users" aria-disabled="true">Utilisateurs <small>Bientôt</small></a>
+                <a class="nav-link is-disabled" href="#settings" aria-disabled="true">Paramètres <small>Bientôt</small></a>
+            </nav>
+            <button id="logoutBtn" class="sidebar-logout" type="button">Déconnexion</button>
+        </aside>
+
+        <main class="dashboard-main" id="overview">
+            <header class="dashboard-header">
+                <div><p class="eyebrow">Tableau de bord</p><h1>Vue d'ensemble</h1></div>
+                <div class="header-actions"><span id="lastUpdated"></span><button id="refreshBtn" class="button-secondary" type="button">Actualiser</button></div>
+            </header>
+
+            <section class="stats-grid" aria-label="Statistiques totales">
+                <div class="stat-card"><span class="stat-label">Téléchargements totaux</span><strong id="downloads" class="stat">—</strong><span class="stat-trend">Depuis le lancement</span></div>
+                <div class="stat-card"><span class="stat-label">Visites totales</span><strong id="visits" class="stat">—</strong><span class="stat-trend">Depuis le lancement</span></div>
+            </section>
+
+            <section class="period-grid" aria-label="Statistiques par période">
+                <div><strong id="todayDownloads">—</strong><span>Téléchargements aujourd'hui</span></div>
+                <div><strong id="todayVisits">—</strong><span>Visites aujourd'hui</span></div>
+                <div><strong id="weekDownloads">—</strong><span>Téléchargements (7 jours)</span></div>
+                <div><strong id="weekVisits">—</strong><span>Visites (7 jours)</span></div>
+                <div><strong id="monthDownloads">—</strong><span>Téléchargements (30 jours)</span></div>
+                <div><strong id="monthVisits">—</strong><span>Visites (30 jours)</span></div>
+            </section>
+
+            <section class="panel">
+                <div class="panel-heading">
+                    <div><h2>Activité</h2><p>Les 30 derniers jours</p></div>
+                    <div class="chart-legend"><span class="legend-downloads">Téléchargements</span><span class="legend-visits">Visites</span></div>
+                </div>
+                <div id="chart" class="chart" aria-label="Graphique des téléchargements et visites"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/admin/app.js"></script>
+</body>
+
+</html>

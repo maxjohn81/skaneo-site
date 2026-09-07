@@ -1,4 +1,4 @@
-import { clearedSessionCookie, destroySession } from "./_auth.js";
+import { clearedSessionCookie, destroySession } from "../lib/auth.js";
 
 export default async function handler(req, res) {
     if (req.method !== "POST") {

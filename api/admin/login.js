@@ -1,4 +1,4 @@
-import { createSession, sessionCookie } from "./_auth.js";
+import { createSession, sessionCookie } from "../lib/auth.js";
 
 export default async function handler(req, res) {
     if (req.method !== "POST") {
