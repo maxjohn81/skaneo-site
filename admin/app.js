@@ -26,7 +26,7 @@ async function loadStats() {
     btn?.setAttribute("disabled", "true");
 
     try {
-        const response = await fetch("/api/admin-stats");
+        const response = await fetch("/api/admin/stats");
 
         if (response.status === 401) {
             document.getElementById("dashboardPanel").hidden = true;
@@ -80,7 +80,7 @@ async function login(event) {
     errorEl.textContent = "";
 
     try {
-        const response = await fetch("/api/admin-login", {
+        const response = await fetch("/api/admin/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ password }),
@@ -96,7 +96,7 @@ async function login(event) {
 }
 
 async function logout() {
-    await fetch("/api/admin-logout", { method: "POST" });
+    await fetch("/api/admin/logout", { method: "POST" });
     document.getElementById("dashboardPanel").hidden = true;
     document.getElementById("loginPanel").hidden = false;
 }

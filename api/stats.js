@@ -1,4 +1,4 @@
-import { redis } from "./redis.js";
+import { redis } from "./lib/redis.js";
 
 export default async function handler(req, res) {
     const [downloads, visits] = await redis.mget("downloads", "visits");

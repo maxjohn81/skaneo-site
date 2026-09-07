@@ -1,4 +1,4 @@
-import { redis } from "./redis.js";
+import { redis } from "./lib/redis.js";
 
 export default async function handler(req, res) {
     const date = new Date().toISOString().slice(0, 10);
