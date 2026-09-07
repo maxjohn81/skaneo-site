@@ -84,3 +84,17 @@ Chaque amélioration nous rapproche d'une expérience encore plus simple et plus
 La technologie simplifiée pour votre quotidien.
 
 </div>
+
+## Déploiement
+
+Le site est prévu pour Vercel afin d'exécuter les fonctions serverless du dossier `api/`.
+
+Variables d'environnement requises :
+
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN`
+- `ADMIN_PASSWORD`
+
+Le dashboard privé est disponible sur `/admin.html`. Les statistiques journalières
+sont conservées dans Upstash Redis pendant 400 jours et alimentent les vues
+aujourd'hui, 7 jours, 30 jours et le graphique d'activité.
