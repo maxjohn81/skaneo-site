@@ -22,7 +22,7 @@
 
   async function loadDownloads() {
     try {
-      const response = await fetch("/api/stats");
+      const response = await fetch("/api/public-stats");
       const data = await response.json();
 
       document.getElementById("downloads").textContent = data.downloads;
