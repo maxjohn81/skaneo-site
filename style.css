@@ -6,25 +6,29 @@
 /* ---- Design tokens ------------------------------------------------------ */
 :root {
   /* Brand palette (per brief) */
-  --yellow: #FFBF00;
-  --orange: #FF6B00;
-  --dark: #1E293B;
-  --light: #F8FAFC;
-  --white: #FFFFFF;
+  --yellow: #ffbf00;
+  --orange: #ff6b00;
+  --dark: #1e293b;
+  --light: #f8fafc;
+  --white: #ffffff;
 
   /* Derived */
-  --gradient-brand: linear-gradient(135deg, var(--yellow) 0%, var(--orange) 100%);
-  --text-muted: #64748B;
+  --gradient-brand: linear-gradient(
+    135deg,
+    var(--yellow) 0%,
+    var(--orange) 100%
+  );
+  --text-muted: #64748b;
   --border-soft: rgba(30, 41, 59, 0.08);
   --shadow-sm: 0 2px 8px rgba(30, 41, 59, 0.06);
-  --shadow-md: 0 10px 30px rgba(30, 41, 59, 0.10);
+  --shadow-md: 0 10px 30px rgba(30, 41, 59, 0.1);
   --shadow-lg: 0 24px 60px rgba(30, 41, 59, 0.16);
   --shadow-brand: 0 14px 30px rgba(255, 107, 0, 0.28);
 
   /* Type */
-  --font-display: 'Sora', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Menlo, monospace;
+  --font-display: "Sora", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Menlo, monospace;
 
   /* Layout */
   --radius-lg: 24px;
@@ -109,7 +113,6 @@ h4 {
 
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {
@@ -132,7 +135,10 @@ h4 {
   font-family: var(--font-body);
   font-weight: 700;
   font-size: 1rem;
-  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), background 0.3s var(--ease);
+  transition:
+    transform 0.3s var(--ease),
+    box-shadow 0.3s var(--ease),
+    background 0.3s var(--ease);
   white-space: nowrap;
 }
 
@@ -210,7 +216,9 @@ h4 {
   background: rgba(248, 250, 252, 0.85);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid transparent;
-  transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  transition:
+    border-color 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
   width: 100%;
 }
 
@@ -274,7 +282,9 @@ h4 {
   width: 22px;
   height: 2px;
   background: var(--dark);
-  transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+  transition:
+    transform 0.3s var(--ease),
+    opacity 0.3s var(--ease);
 }
 
 .nav-toggle.active span:nth-child(1) {
@@ -297,7 +307,7 @@ h4 {
   .main-nav {
     position: fixed;
     inset: 72px 0 0 0;
-    background: #F8FAFC;
+    background: #f8fafc;
     flex-direction: column;
     align-items: flex-start;
     padding: 28px 24px;
@@ -409,7 +419,6 @@ h4 {
 }
 
 @keyframes floatPhone {
-
   0%,
   100% {
     transform: translateY(0) rotate(-1.5deg);
@@ -478,7 +487,14 @@ h4 {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, transparent, var(--orange) 20%, var(--yellow) 50%, var(--orange) 80%, transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--orange) 20%,
+    var(--yellow) 50%,
+    var(--orange) 80%,
+    transparent
+  );
   box-shadow: 0 0 12px 2px rgba(255, 107, 0, 0.55);
   top: 0;
   animation: scanSweep 2.6s ease-in-out infinite;
@@ -588,7 +604,9 @@ section {
 .reveal {
   opacity: 0;
   transform: translateY(26px);
-  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+  transition:
+    opacity 0.6s var(--ease),
+    transform 0.6s var(--ease);
 }
 
 .reveal.in-view {
@@ -608,7 +626,9 @@ section {
   border-radius: var(--radius-lg);
   padding: 30px 26px;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  transition:
+    transform 0.35s var(--ease),
+    box-shadow 0.35s var(--ease);
 }
 
 .feature-card:hover {
@@ -658,7 +678,9 @@ section {
   color: var(--white);
   position: relative;
   overflow: hidden;
-  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  transition:
+    transform 0.35s var(--ease),
+    box-shadow 0.35s var(--ease);
   box-shadow: var(--shadow-sm);
 }
 
@@ -672,11 +694,11 @@ section {
 }
 
 .operator-card.orange {
-  background: linear-gradient(150deg, #FF7A00, #E85C00);
+  background: linear-gradient(150deg, #ff7a00, #e85c00);
 }
 
 .operator-card.airtel {
-  background: linear-gradient(150deg, #E4002B, #A5001E);
+  background: linear-gradient(150deg, #e4002b, #a5001e);
 }
 
 .operator-card .op-name {
@@ -758,7 +780,9 @@ section {
   color: var(--text-muted);
   font-size: 0.85rem;
   font-weight: 600;
-  transition: transform 0.3s var(--ease), border-color 0.3s var(--ease);
+  transition:
+    transform 0.3s var(--ease),
+    border-color 0.3s var(--ease);
 }
 
 .screen-placeholder:hover {
@@ -870,11 +894,16 @@ section {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 20% 20%, rgba(255, 191, 0, 0.16), transparent 45%),
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(255, 191, 0, 0.16),
+      transparent 45%
+    ),
     radial-gradient(circle at 80% 80%, rgba(255, 107, 0, 0.18), transparent 45%);
 }
 
-.download-section>* {
+.download-section > * {
   position: relative;
   z-index: 1;
 }
@@ -994,7 +1023,9 @@ section {
   font-weight: 600;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+  transition:
+    opacity 0.3s var(--ease),
+    transform 0.3s var(--ease);
   z-index: 999;
   box-shadow: var(--shadow-lg);
 }

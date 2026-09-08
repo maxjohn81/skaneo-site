@@ -62,18 +62,25 @@
       function (entries) {
         entries.forEach(function (entry, i) {
           if (entry.isIntersecting) {
-            setTimeout(function () {
-              entry.target.classList.add("in-view");
-            }, (i % 6) * 70);
+            setTimeout(
+              function () {
+                entry.target.classList.add("in-view");
+              },
+              (i % 6) * 70,
+            );
             io.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
+      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" },
     );
-    revealEls.forEach(function (el) { io.observe(el); });
+    revealEls.forEach(function (el) {
+      io.observe(el);
+    });
   } else {
-    revealEls.forEach(function (el) { el.classList.add("in-view"); });
+    revealEls.forEach(function (el) {
+      el.classList.add("in-view");
+    });
   }
 
   /* -------------------------------------------------------
@@ -92,7 +99,9 @@
         if (openItem !== item) {
           openItem.classList.remove("open");
           openItem.querySelector(".faq-answer").style.maxHeight = null;
-          openItem.querySelector(".faq-question").setAttribute("aria-expanded", "false");
+          openItem
+            .querySelector(".faq-question")
+            .setAttribute("aria-expanded", "false");
         }
       });
 
@@ -120,16 +129,18 @@
       var circle = document.createElement("span");
       circle.className = "ripple";
       circle.style.width = circle.style.height = size + "px";
-      circle.style.left = (e.clientX - rect.left - size / 2) + "px";
-      circle.style.top = (e.clientY - rect.top - size / 2) + "px";
+      circle.style.left = e.clientX - rect.left - size / 2 + "px";
+      circle.style.top = e.clientY - rect.top - size / 2 + "px";
       btn.appendChild(circle);
-      setTimeout(function () { circle.remove(); }, 650);
+      setTimeout(function () {
+        circle.remove();
+      }, 650);
     });
   });
 
   /* -------------------------------------------------------
- * 6. Toast helper (used to confirm download start)
- * ----------------------------------------------------- */
+   * 6. Toast helper (used to confirm download start)
+   * ----------------------------------------------------- */
   var toastEl = document.querySelector(".toast");
   function showToast(message) {
     if (!toastEl) return;
@@ -154,17 +165,17 @@
     overlay.innerHTML =
       '<div class="cgu-modal" role="dialog" aria-modal="true" aria-labelledby="cgu-modal-title">' +
       '<h3 id="cgu-modal-title">Avant de télécharger</h3>' +
-      '<p>Skaneo scanne vos cartes de recharge et permet des retraits Mobile Money. Merci de lire nos ' +
+      "<p>Skaneo scanne vos cartes de recharge et permet des retraits Mobile Money. Merci de lire nos " +
       '<a href="/cgu.html" target="_blank" rel="noopener">Conditions Générales d\'Utilisation</a> avant de continuer.</p>' +
       '<label class="cgu-modal-check">' +
       '<input type="checkbox" id="cgu-accept-checkbox">' +
-      'J\'ai lu et j\'accepte les Conditions Générales d\'Utilisation' +
-      '</label>' +
+      "J'ai lu et j'accepte les Conditions Générales d'Utilisation" +
+      "</label>" +
       '<div class="cgu-modal-actions">' +
       '<button type="button" class="btn btn-ghost btn-sm" id="cgu-cancel-btn">Annuler</button>' +
       '<button type="button" class="btn btn-primary btn-sm" id="cgu-confirm-btn" disabled>Télécharger</button>' +
-      '</div>' +
-      '</div>';
+      "</div>" +
+      "</div>";
     document.body.appendChild(overlay);
 
     var checkbox = overlay.querySelector("#cgu-accept-checkbox");
@@ -215,7 +226,7 @@
     window.location.href = url;
   }
 
-  document.querySelectorAll('a[data-download]').forEach(function (link) {
+  document.querySelectorAll("a[data-download]").forEach(function (link) {
     link.addEventListener("click", function (e) {
       e.preventDefault();
       downloadUrlEnAttente = link.getAttribute("href");
@@ -238,7 +249,11 @@
       var target = document.getElementById(id);
       if (target) {
         e.preventDefault();
-        var top = target.getBoundingClientRect().top + window.scrollY - headerHeight - 12;
+        var top =
+          target.getBoundingClientRect().top +
+          window.scrollY -
+          headerHeight -
+          12;
         window.scrollTo({ top: top, behavior: "smooth" });
       }
     });
@@ -250,14 +265,9 @@
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-
-
-
-
-
   /* -------------------------------------------------------
-     * 10. Connexion Google optionnelle (Supabase Auth)
-     * ----------------------------------------------------- */
+   * 10. Connexion Google optionnelle (Supabase Auth)
+   * ----------------------------------------------------- */
   var SUPABASE_URL = "https://nngfkvzupvskphydhxyg.supabase.co";
   var SUPABASE_ANON_KEY = "sb_publishable_ZK5KDZSt5OgJHMxofw9rcw_2zquNzMX";
 
@@ -291,11 +301,10 @@
         } else {
           await sb.auth.signInWithOAuth({
             provider: "google",
-            options: { redirectTo: window.location.origin }
+            options: { redirectTo: window.location.origin },
           });
         }
       });
     }
   }
-
 })();
