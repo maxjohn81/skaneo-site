@@ -6,6 +6,6 @@ export default async function handler(req, res) {
   }
 
   await destroySession(req);
-  res.setHeader("Set-Cookie", clearedSessionCookie());
+  res.setHeader("Set-Cookie", clearedSessionCookie(req));
   return res.status(200).json({ ok: true });
 }

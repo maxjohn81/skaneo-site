@@ -13,8 +13,8 @@ export default async function handler(req, res) {
   }
 
   const today = new Date();
-  const dates = Array.from({ length: 30 }, (_, index) => {
-    const date = new Date(today.getTime() - (29 - index) * DAY);
+  const dates = Array.from({ length: 90 }, (_, index) => {
+    const date = new Date(today.getTime() - (89 - index) * DAY);
     return dateKey(date);
   });
   const keys = dates.flatMap((date) => [
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
       }),
       { downloads: 0, visits: 0 },
     ),
-    last30Days: series.reduce(
+    last30Days: series.slice(-30).reduce(
       (sum, item) => ({
         downloads: sum.downloads + item.downloads,
         visits: sum.visits + item.visits,

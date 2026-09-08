@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Skaneo Admin</title>
+    <script>
+      document.documentElement.dataset.theme = localStorage.getItem("skaneo_theme") || "light";
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -32,104 +35,374 @@
             required
           />
           <p id="loginError" class="form-error" role="alert"></p>
-          <button type="submit">Se connecter</button>
+          <button id="loginSubmit" type="submit">
+            <span class="login-submit-label">Se connecter</span>
+            <span class="button-loader" aria-hidden="true"></span>
+          </button>
         </form>
       </div>
     </div>
 
     <div id="dashboardPanel" class="admin-shell" hidden>
-      <aside class="sidebar">
-        <div class="sidebar-brand">
-          <div class="brand-dot"></div>
-          <strong>Skaneo</strong>
-        </div>
-        <nav aria-label="Navigation admin">
-          <a class="nav-link active" href="#overview">Vue d'ensemble</a>
-          <a class="nav-link" href="#downloads">Téléchargements</a>
-          <a class="nav-link" href="#visits">Visites</a>
-          <a class="nav-link is-disabled" href="#users" aria-disabled="true"
-            >Utilisateurs <small>Bientôt</small></a
-          >
-          <a class="nav-link is-disabled" href="#settings" aria-disabled="true"
-            >Paramètres <small>Bientôt</small></a
-          >
-        </nav>
-        <button id="logoutBtn" class="sidebar-logout" type="button">
-          Déconnexion
+      <header class="admin-topbar">
+        <a
+          class="topbar-brand"
+          href="#overview"
+          aria-label="Accueil Skaneo Admin"
+        >
+          <span class="brand-dot"></span><strong>Skaneo Admin</strong>
+        </a>
+        <button id="adminThemeToggle" class="admin-theme-toggle" type="button" aria-label="Activer le mode sombre" aria-pressed="false">
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 15.1A8.5 8.5 0 0 1 8.9 3.6 8.5 8.5 0 1 0 20.4 15.1Z"/></svg>
         </button>
-      </aside>
+        <div class="session-status"><span></span>Rivo Andriharisoa</div>
+        <button
+          id="adminMenuToggle"
+          class="admin-menu-toggle"
+          type="button"
+          aria-label="Ouvrir le menu de navigation"
+          aria-expanded="false"
+          aria-controls="adminSidebar"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+        </button>
+      </header>
 
-      <main class="dashboard-main" id="overview">
-        <header class="dashboard-header">
-          <div>
-            <p class="eyebrow">Tableau de bord</p>
-            <h1>Vue d'ensemble</h1>
+      <div class="admin-layout">
+        <aside id="adminSidebar" class="sidebar">
+          <button
+            id="adminMenuClose"
+            class="sidebar-close"
+            type="button"
+            aria-label="Fermer le menu de navigation"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+          </button>
+          <div class="sidebar-brand">
+            <div class="brand-dot"></div>
+            <strong>Skaneo</strong>
           </div>
-          <div class="header-actions">
-            <span id="lastUpdated"></span
-            ><button id="refreshBtn" class="button-secondary" type="button">
-              Actualiser
-            </button>
-          </div>
-        </header>
+          <nav aria-label="Navigation admin">
+            <a
+              class="nav-link active"
+              href="#overview"
+              data-view-link="overview"
+              ><span
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="3" width="7" height="7" rx="1" />
+                  <rect x="14" y="3" width="7" height="7" rx="1" />
+                  <rect x="3" y="14" width="7" height="7" rx="1" />
+                  <rect x="14" y="14" width="7" height="7" rx="1" /></svg
+                >Vue d'ensemble</span
+              ></a
+            >
+            <a class="nav-link" href="#downloads" data-view-link="downloads"
+              ><span
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" /></svg
+                >Téléchargements</span
+              ></a
+            >
+            <a class="nav-link" href="#visits" data-view-link="visits"
+              ><span
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"
+                  />
+                  <circle cx="12" cy="12" r="2.5" /></svg
+                >Visites</span
+              ></a
+            >
+            <a class="nav-link" href="#users" data-view-link="users"
+              ><span
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="9" cy="8" r="3" />
+                  <path
+                    d="M3.5 20c.6-3.3 2.5-5 5.5-5s4.9 1.7 5.5 5M16 5.5a3 3 0 0 1 0 5M17.5 15c2 0 3.5 1.7 4 5"
+                  /></svg
+                >Utilisateurs</span
+              ></a
+            >
+            <a class="nav-link" href="#settings" data-view-link="settings"
+              ><span
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3" />
+                  <path
+                    d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.3 2.3-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2h-3v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1-2.3-2.3.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H5v-3h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1 2.3-2.3.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5V3.5h3v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1 2.3 2.3-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.2v3h-.2a1.7 1.7 0 0 0-1.5 1Z"
+                  /></svg
+                >Paramètres</span
+              ></a
+            >
+          </nav>
+          <button id="logoutBtn" class="sidebar-logout" type="button">
+            Déconnexion
+          </button>
+        </aside>
+        <button
+          id="sidebarBackdrop"
+          class="sidebar-backdrop"
+          type="button"
+          aria-label="Fermer le menu de navigation"
+          tabindex="-1"
+        ></button>
 
-        <section class="stats-grid" aria-label="Statistiques totales">
-          <div class="stat-card">
-            <span class="stat-label">Téléchargements totaux</span
-            ><strong id="downloads" class="stat">—</strong
-            ><span class="stat-trend">Depuis le lancement</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-label">Visites totales</span
-            ><strong id="visits" class="stat">—</strong
-            ><span class="stat-trend">Depuis le lancement</span>
-          </div>
-        </section>
+        <main class="dashboard-main">
+          <section class="admin-view" data-view="overview">
+            <header class="dashboard-header">
+              <div>
+                <p class="eyebrow">Tableau de bord</p>
+                <h1>Vue d'ensemble</h1>
+              </div>
+              <div class="header-actions">
+                <span id="lastUpdated"></span
+                ><button id="refreshBtn" class="button-secondary" type="button">
+                  Actualiser
+                </button>
+              </div>
+            </header>
 
-        <section class="period-grid" aria-label="Statistiques par période">
-          <div>
-            <strong id="todayDownloads">—</strong
-            ><span>Téléchargements aujourd'hui</span>
-          </div>
-          <div>
-            <strong id="todayVisits">—</strong><span>Visites aujourd'hui</span>
-          </div>
-          <div>
-            <strong id="weekDownloads">—</strong
-            ><span>Téléchargements (7 jours)</span>
-          </div>
-          <div>
-            <strong id="weekVisits">—</strong><span>Visites (7 jours)</span>
-          </div>
-          <div>
-            <strong id="monthDownloads">—</strong
-            ><span>Téléchargements (30 jours)</span>
-          </div>
-          <div>
-            <strong id="monthVisits">—</strong><span>Visites (30 jours)</span>
-          </div>
-        </section>
+            <section class="stats-grid" aria-label="Statistiques totales">
+              <div class="stat-card">
+                <div class="stat-card-head">
+                  <span class="stat-label">Téléchargements totaux</span
+                  ><span class="stat-icon stat-icon-orange"
+                    ><svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" /></svg
+                  ></span>
+                </div>
+                <strong id="downloads" class="stat">—</strong
+                ><span class="stat-trend">Depuis le lancement</span>
+              </div>
+              <div class="stat-card">
+                <div class="stat-card-head">
+                  <span class="stat-label">Visites totales</span
+                  ><span class="stat-icon stat-icon-yellow"
+                    ><svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"
+                      />
+                      <circle cx="12" cy="12" r="2.5" /></svg
+                  ></span>
+                </div>
+                <strong id="visits" class="stat">—</strong
+                ><span class="stat-trend">Depuis le lancement</span>
+              </div>
+            </section>
 
-        <section class="panel">
-          <div class="panel-heading">
-            <div>
-              <h2>Activité</h2>
-              <p>Les 30 derniers jours</p>
+            <section class="period-grid" aria-label="Statistiques par période">
+              <div>
+                <strong id="todayDownloads">—</strong
+                ><span>Téléchargements aujourd'hui</span>
+              </div>
+              <div>
+                <strong id="todayVisits">—</strong
+                ><span>Visites aujourd'hui</span>
+              </div>
+              <div>
+                <strong id="weekDownloads">—</strong
+                ><span>Téléchargements (7 jours)</span>
+              </div>
+              <div>
+                <strong id="weekVisits">—</strong><span>Visites (7 jours)</span>
+              </div>
+              <div>
+                <strong id="monthDownloads">—</strong
+                ><span>Téléchargements (30 jours)</span>
+              </div>
+              <div>
+                <strong id="monthVisits">—</strong
+                ><span>Visites (30 jours)</span>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Activité</h2>
+                  <p>Les 30 derniers jours</p>
+                </div>
+              </div>
+              <div class="chart-wrap">
+                <canvas
+                  id="activityChart"
+                  aria-label="Graphique des téléchargements et visites"
+                ></canvas>
+              </div>
+            </section>
+          </section>
+
+          <section class="admin-view" data-view="downloads" hidden>
+            <header class="dashboard-header">
+              <div>
+                <p class="eyebrow">Analyse</p>
+                <h1>Téléchargements</h1>
+                <p class="page-description">
+                  Suivez l'évolution des téléchargements de Skaneo.
+                </p>
+              </div>
+              <button class="button-secondary" type="button" data-refresh>
+                Actualiser
+              </button>
+            </header>
+            <section class="stats-grid single-stat">
+              <div class="stat-card">
+                <div class="stat-card-head">
+                  <span class="stat-label">Téléchargements totaux</span
+                  ><span class="stat-icon stat-icon-orange"
+                    ><svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" /></svg
+                  ></span>
+                </div>
+                <strong id="downloadsPageTotal" class="stat">—</strong
+                ><span class="stat-trend">Depuis le lancement</span>
+              </div>
+              <div class="stat-card">
+                <div class="stat-card-head">
+                  <span class="stat-label">Sur les 30 derniers jours</span
+                  ><span class="stat-icon stat-icon-orange"
+                    ><svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" /></svg
+                  ></span>
+                </div>
+                <strong id="monthDownloadsPage" class="stat">—</strong
+                ><span class="stat-trend">Téléchargements cumulés</span>
+              </div>
+            </section>
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Évolution des téléchargements</h2>
+                  <p>Analyse selon la période sélectionnée</p>
+                </div>
+                <label class="chart-filter-label"
+                  >Période<select
+                    class="chart-range"
+                    data-chart-range="downloads"
+                  >
+                    <option value="today">Aujourd'hui</option>
+                    <option value="7" selected>7 derniers jours</option>
+                    <option value="90">3 derniers mois</option>
+                  </select></label
+                >
+              </div>
+              <div class="chart-wrap">
+                <canvas
+                  id="downloadsChart"
+                  aria-label="Graphique des téléchargements"
+                ></canvas>
+              </div>
+            </section>
+          </section>
+
+          <section class="admin-view" data-view="visits" hidden>
+            <header class="dashboard-header">
+              <div>
+                <p class="eyebrow">Analyse</p>
+                <h1>Visites</h1>
+                <p class="page-description">
+                  Suivez les visites enregistrées sur le site.
+                </p>
+              </div>
+              <button class="button-secondary" type="button" data-refresh>
+                Actualiser
+              </button>
+            </header>
+            <section class="stats-grid single-stat">
+              <div class="stat-card">
+                <div class="stat-card-head">
+                  <span class="stat-label">Visites totales</span
+                  ><span class="stat-icon stat-icon-yellow"
+                    ><svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"
+                      />
+                      <circle cx="12" cy="12" r="2.5" /></svg
+                  ></span>
+                </div>
+                <strong id="visitsPageTotal" class="stat">—</strong
+                ><span class="stat-trend">Depuis le lancement</span>
+              </div>
+              <div class="stat-card">
+                <div class="stat-card-head">
+                  <span class="stat-label">Sur les 30 derniers jours</span
+                  ><span class="stat-icon stat-icon-yellow"
+                    ><svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"
+                      />
+                      <circle cx="12" cy="12" r="2.5" /></svg
+                  ></span>
+                </div>
+                <strong id="monthVisitsPage" class="stat">—</strong
+                ><span class="stat-trend">Visites cumulées</span>
+              </div>
+            </section>
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Évolution des visites</h2>
+                  <p>Analyse selon la période sélectionnée</p>
+                </div>
+                <label class="chart-filter-label"
+                  >Période<select class="chart-range" data-chart-range="visits">
+                    <option value="today">Aujourd'hui</option>
+                    <option value="7" selected>7 derniers jours</option>
+                    <option value="90">3 derniers mois</option>
+                  </select></label
+                >
+              </div>
+              <div class="chart-wrap">
+                <canvas
+                  id="visitsChart"
+                  aria-label="Graphique des visites"
+                ></canvas>
+              </div>
+            </section>
+          </section>
+
+          <section class="admin-view unavailable-view" data-view="users" hidden>
+            <div class="unavailable-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <circle cx="9" cy="8" r="3" />
+                <path
+                  d="M3.5 20c.6-3.3 2.5-5 5.5-5s4.9 1.7 5.5 5M16 5.5a3 3 0 0 1 0 5M17.5 15c2 0 3.5 1.7 4 5"
+                />
+              </svg>
             </div>
-            <div class="chart-legend">
-              <span class="legend-downloads">Téléchargements</span
-              ><span class="legend-visits">Visites</span>
+            <p class="eyebrow">Utilisateurs</p>
+            <h1>Cette fonctionnalité n'est pas encore disponible</h1>
+            <p>
+              La gestion des utilisateurs arrivera dans une prochaine mise à
+              jour de Skaneo.
+            </p>
+          </section>
+          <section
+            class="admin-view unavailable-view"
+            data-view="settings"
+            hidden
+          >
+            <div class="unavailable-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="3" />
+                <path
+                  d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.3 2.3-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2h-3v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1-2.3-2.3.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H5v-3h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1 2.3-2.3.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5V3.5h3v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1 2.3 2.3-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.2v3h-.2a1.7 1.7 0 0 0-1.5 1Z"
+                />
+              </svg>
             </div>
-          </div>
-          <div
-            id="chart"
-            class="chart"
-            aria-label="Graphique des téléchargements et visites"
-          ></div>
-        </section>
-      </main>
+            <p class="eyebrow">Paramètres</p>
+            <h1>Cette fonctionnalité n'est pas encore disponible</h1>
+            <p>
+              Les paramètres de l'espace admin seront disponibles prochainement.
+            </p>
+          </section>
+        </main>
+      </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script src="/admin/app.js"></script>
   </body>
 </html>

@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>document.documentElement.dataset.theme = localStorage.getItem("skaneo_theme") || "light";</script>
     <title>Politique de confidentialité de Skaneo</title>
     <meta name="robots" content="noindex, follow" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -21,10 +22,23 @@
           />
           Skaneo
         </a>
+        <nav class="main-nav" aria-label="Navigation principale">
+          <a href="/#features">Fonctionnalités</a>
+          <a href="/#operators">Opérateurs</a>
+          <a href="/#how-it-works">Comment ça marche</a>
+          <a href="/#faq">FAQ</a>
+        </nav>
+        <button class="theme-toggle" type="button" aria-label="Activer le mode sombre" aria-pressed="false">
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 15.1A8.5 8.5 0 0 1 8.9 3.6 8.5 8.5 0 1 0 20.4 15.1Z"/></svg>
+        </button>
+        <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </header>
-    <main>
-      <section style="padding: 80px 0; max-width: 720px; margin: 0 auto">
+    <main id="main">
+      <section style="padding: 140px 0 80px; max-width: 720px; margin: 0 auto">
         <div class="container">
           <h1>Politique de confidentialité</h1>
           <p style="color: var(--text-muted); margin-top: 16px">
@@ -50,5 +64,39 @@
         </div>
       </section>
     </main>
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-top">
+          <div>
+            <div class="footer-brand">
+              <img src="/assets/logo.png" alt="Logo Skaneo" width="30" height="30" />
+              Skaneo
+            </div>
+            <p class="footer-tagline">Le scanner de cartes de recharge offline</p>
+          </div>
+          <div class="footer-col">
+            <h4>Produit</h4>
+            <ul>
+              <li><a href="/#features">Fonctionnalités</a></li>
+              <li><a href="/api/download" data-download>Télécharger</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Légal</h4>
+            <ul>
+              <li><a href="/cgu.html">Conditions d'utilisation</a></li>
+              <li><a href="/createur.html">Créateur</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>&copy; <span id="year">2026</span> Skaneo. Tous droits réservés.</span>
+          <span>Version 1.0.2</span>
+        </div>
+      </div>
+    </footer>
+
+    <div class="toast" role="status" aria-live="polite"></div>
+    <script src="/script.js" defer></script>
   </body>
 </html>

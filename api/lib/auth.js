@@ -1,8 +1,10 @@
-import { randomUUID, timingSafeEqual } from "node:crypto";
+import { createHash, randomUUID, timingSafeEqual } from "node:crypto";
 import { redis } from "./redis.js";
 
 const SESSION_TTL = 60 * 60 * 24;
 const COOKIE_NAME = "skaneo_admin";
+const LOGIN_ATTEMPT_TTL = 60 * 15;
+const MAX_LOGIN_ATTEMPTS = 5;
 
 function parseCookies(req) {
   return Object.fromEntries(
@@ -49,10 +51,49 @@ export async function destroySession(req) {
   if (token) await redis.del(`admin:session:${token}`);
 }
 
-export function sessionCookie(token) {
-  return `${COOKIE_NAME}=${encodeURIComponent(token)}; Max-Age=${SESSION_TTL}; Path=/; HttpOnly; SameSite=Strict; Secure`;
+function loginAttemptKey(req) {
+  const forwardedFor = req.headers["x-forwarded-for"];
+  const address = String(forwardedFor || req.socket?.remoteAddress || "unknown")
+    .split(",")[0]
+    .trim();
+  const fingerprint = createHash("sha256").update(address).digest("hex");
+  return `admin:login-attempts:${fingerprint}`;
 }
 
-export function clearedSessionCookie() {
-  return `${COOKIE_NAME}=; Max-Age=0; Path=/; HttpOnly; SameSite=Strict; Secure`;
+export async function isLoginRateLimited(req) {
+  const attempts = Number((await redis.get(loginAttemptKey(req))) || 0);
+  return attempts >= MAX_LOGIN_ATTEMPTS;
+}
+
+export async function recordFailedLogin(req) {
+  const key = loginAttemptKey(req);
+  const attempts = await redis.incr(key);
+
+  if (attempts === 1) {
+    await redis.expire(key, LOGIN_ATTEMPT_TTL);
+  }
+}
+
+export async function clearFailedLogins(req) {
+  await redis.del(loginAttemptKey(req));
+}
+
+function shouldUseSecureCookie(req) {
+  const forwardedProtocol = String(req.headers["x-forwarded-proto"] || "")
+    .split(",")[0]
+    .trim();
+  return forwardedProtocol === "https" || process.env.VERCEL === "1";
+}
+
+function cookieAttributes(req) {
+  const secure = shouldUseSecureCookie(req) ? "; Secure" : "";
+  return `Path=/; HttpOnly; SameSite=Strict${secure}`;
+}
+
+export function sessionCookie(token, req) {
+  return `${COOKIE_NAME}=${encodeURIComponent(token)}; Max-Age=${SESSION_TTL}; ${cookieAttributes(req)}`;
+}
+
+export function clearedSessionCookie(req) {
+  return `${COOKIE_NAME}=; Max-Age=0; ${cookieAttributes(req)}`;
 }

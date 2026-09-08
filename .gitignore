@@ -3,6 +3,7 @@ node_modules/
 
 # environnement
 .env
+.env.local
 
 # logs
 npm-debug.log*
@@ -12,3 +13,5 @@ yarn-error.log*
 # build
 dist/
 .vercel/
+.vercel
+.env*
