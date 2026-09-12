@@ -6,5 +6,5 @@ export default async function handler(req, res) {
   await redis.incr(`stats:downloads:${date}`);
   await redis.expire(`stats:downloads:${date}`, 60 * 60 * 24 * 400);
 
-  return res.redirect("../apk/Skaneo-v1.0.2.apk");
+  return res.redirect("../apk/Skaneo-v1.0.3.apk");
 }
