@@ -1,0 +1,5 @@
+{
+  "version": "1.0.2",
+  "url": "https://skaneo.vercel.app/api/download",
+  "notes": "Nouveau : notification push pour les nouvelles versions de l'application. \n\nCorrection : correction d'un bug qui empêchait la détection de texte sur certaines images.\n\nAmélioration : amélioration de la vitesse de traitement des images pour une meilleure expérience utilisateur."
+}
