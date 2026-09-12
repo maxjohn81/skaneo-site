@@ -1,6 +1,6 @@
 export default function handler(_req, res) {
   res.status(200).json({
-    version: "1.0.2",
+    version: "1.0.3",
     url: "https://skaneo.vercel.app/api/download",
     notes:
       "Nouveau : notification push pour les nouvelles versions de l'application.\n\n" +
