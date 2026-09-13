@@ -294,10 +294,32 @@ async function publishRelease(event) {
   submit.classList.add("loading");
 
   try {
+    const file = document.getElementById("apkFile").files[0];
+    if (!file) throw new Error("Sélectionne un fichier APK.");
+
+    const currentVersion = document.getElementById("releaseVersion").textContent;
+    const version = nextVersion(currentVersion);
+    const filename = `Skaneo-v${version}.apk`;
+    const { upload } = await import("https://cdn.jsdelivr.net/npm/@vercel/blob@2.8.0/client/+esm");
+    const uploadResult = await upload(`releases/${filename}`, file, {
+      access: "public",
+      handleUploadUrl: "/api/admin/blob-upload",
+      multipart: false,
+      onUploadProgress: (progress) => {
+        submit.querySelector("span").textContent = `Upload ${Math.round(progress.percentage)} %`;
+      },
+    });
+
     const response = await fetch("/api/admin/release", {
       method: "POST",
       credentials: "same-origin",
-      body: new FormData(form),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        blobUrl: uploadResult.url,
+        filename,
+        notes: document.getElementById("releaseNotes").value,
+        size: file.size,
+      }),
     });
     const data = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(data.error || "Publication impossible");
@@ -310,6 +332,7 @@ async function publishRelease(event) {
     error.textContent = publishError.message;
   } finally {
     submit.disabled = false;
+    submit.querySelector("span").textContent = "Publier la mise à jour";
     submit.classList.remove("loading");
   }
 }

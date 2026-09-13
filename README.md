@@ -100,5 +100,7 @@ Le dashboard privé est disponible sur `/admin/`. Les statistiques journalières
 sont conservées dans Upstash Redis pendant 400 jours et alimentent les vues
 aujourd'hui, 7 jours, 30 jours et le graphique d'activité.
 
-Les APK publiés depuis l'administration sont stockés dans Vercel Blob. La
-dernière release et son historique sont conservés dans Upstash Redis.
+Les APK publiés depuis l'administration sont envoyés directement du navigateur
+vers Vercel Blob avec une progression d'upload. L'API serverless ne reçoit
+ensuite que l'URL et les métadonnées de la release. La dernière release et son
+historique sont conservés dans Upstash Redis.
