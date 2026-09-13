@@ -94,7 +94,11 @@ Variables d'environnement requises :
 - `UPSTASH_REDIS_REST_URL`
 - `UPSTASH_REDIS_REST_TOKEN`
 - `ADMIN_PASSWORD`
+- `BLOB_READ_WRITE_TOKEN`
 
 Le dashboard privé est disponible sur `/admin/`. Les statistiques journalières
 sont conservées dans Upstash Redis pendant 400 jours et alimentent les vues
 aujourd'hui, 7 jours, 30 jours et le graphique d'activité.
+
+Les APK publiés depuis l'administration sont stockés dans Vercel Blob. La
+dernière release et son historique sont conservés dans Upstash Redis.

@@ -10,6 +10,7 @@ const pageTitles = {
   downloads: "Téléchargements",
   visits: "Visites",
   users: "Utilisateurs",
+  releases: "Versions mobiles",
   settings: "Paramètres",
 };
 
@@ -101,7 +102,8 @@ function showView(view) {
   document.querySelectorAll("[data-view-link]").forEach((link) => {
     link.classList.toggle("active", link.dataset.viewLink === activeView);
   });
-  document.getElementById("currentPageTitle").textContent = pageTitles[activeView];
+  const currentPageTitle = document.getElementById("currentPageTitle");
+  if (currentPageTitle) currentPageTitle.textContent = pageTitles[activeView];
   renderCharts(latestSeries);
 }
 
@@ -128,6 +130,7 @@ async function loadStats() {
       document.getElementById("loginPanel").hidden = false;
       return;
     }
+
     if (!response.ok) {
       throw new Error(`Erreur serveur (${response.status})`);
     }
@@ -172,6 +175,145 @@ async function loadStats() {
   }
 }
 
+function nextVersion(version) {
+    const parts = version.split(".").map(Number);
+    if (parts.length !== 3 || parts.some((part) => !Number.isInteger(part))) return "—";
+    parts[2] += 1;
+    if (parts[2] > 9) {
+      parts[2] = 0;
+      parts[1] += 1;
+    }
+    if (parts[1] > 9) {
+      parts[1] = 0;
+      parts[0] += 1;
+    }
+    return parts.join(".");
+}
+
+function formatFileSize(bytes) {
+    if (bytes < 1024 * 1024) return `${Math.ceil(bytes / 1024)} Ko`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} Mo`;
+}
+
+function updateApkPreview(file) {
+    const preview = document.getElementById("apkPreview");
+    const dropzone = document.getElementById("apkDropzone");
+    if (!file) {
+      preview.hidden = true;
+      dropzone.classList.remove("has-file");
+      return;
+    }
+    document.getElementById("apkFileName").textContent = file.name;
+    document.getElementById("apkFileSize").textContent = formatFileSize(file.size);
+    preview.hidden = false;
+    dropzone.classList.add("has-file");
+}
+
+function setupReleaseForm() {
+    const fileInput = document.getElementById("apkFile");
+    const dropzone = document.getElementById("apkDropzone");
+    const notes = document.getElementById("releaseNotes");
+    const preview = document.getElementById("apkPreview");
+    const remove = document.getElementById("apkRemove");
+    const updateFile = (file) => {
+      if (!file) return;
+      if (!file.name.toLowerCase().endsWith(".apk")) {
+        document.getElementById("releaseError").textContent = "Sélectionne un fichier APK.";
+        fileInput.value = "";
+        return;
+      }
+      const transfer = new DataTransfer();
+      transfer.items.add(file);
+      fileInput.files = transfer.files;
+      updateApkPreview(file);
+      document.getElementById("releaseError").textContent = "";
+    };
+    fileInput.addEventListener("change", () => updateFile(fileInput.files[0]));
+    ["dragenter", "dragover"].forEach((eventName) => {
+      dropzone.addEventListener(eventName, (event) => {
+        event.preventDefault();
+        dropzone.classList.add("is-dragging");
+      });
+    });
+    ["dragleave", "drop"].forEach((eventName) => {
+      dropzone.addEventListener(eventName, (event) => {
+        event.preventDefault();
+        dropzone.classList.remove("is-dragging");
+      });
+    });
+    dropzone.addEventListener("drop", (event) => updateFile(event.dataTransfer.files[0]));
+    remove.addEventListener("click", () => {
+      fileInput.value = "";
+      updateApkPreview(null);
+    });
+    notes.addEventListener("input", () => {
+      document.getElementById("releaseNotesCount").textContent = `${notes.value.length} / 500`;
+    });
+    preview.addEventListener("click", (event) => event.stopPropagation());
+}
+
+async function loadRelease() {
+  const response = await fetch("/api/admin/release", { credentials: "same-origin" });
+  if (response.status === 401) return;
+  if (!response.ok) throw new Error("Impossible de charger la version publiée");
+  const data = await response.json();
+  const release = data.latest || data;
+  document.getElementById("releaseVersion").textContent = release?.version || "—";
+  document.getElementById("releaseFilename").textContent = release?.filename || "Aucune publication";
+  document.getElementById("releaseStatus").textContent = release?.publishedAt
+    ? "Publiée le " + new Date(release.publishedAt).toLocaleString("fr-FR")
+    : "Aucune version publiée";
+  const link = document.getElementById("releaseDownload");
+  link.href = release?.url || "#";
+  document.getElementById("releaseNextVersion").textContent =
+    release?.version ? nextVersion(release.version) : "1.0.4";
+  const history = document.getElementById("releaseHistory");
+  history.replaceChildren();
+  if (!data.history?.length) {
+    const empty = document.createElement("li");
+    empty.textContent = "Aucune publication dynamique.";
+    history.append(empty);
+    return;
+  }
+  data.history.forEach((item) => {
+    const entry = document.createElement("li");
+    entry.textContent = `${item.version} — ${new Date(item.publishedAt).toLocaleString("fr-FR")}`;
+    history.append(entry);
+  });
+}
+
+async function publishRelease(event) {
+  event.preventDefault();
+  const form = document.getElementById("releaseForm");
+  const submit = document.getElementById("releaseSubmit");
+  const error = document.getElementById("releaseError");
+  const success = document.getElementById("releaseSuccess");
+  error.textContent = "";
+  success.textContent = "";
+  submit.disabled = true;
+  submit.classList.add("loading");
+
+  try {
+    const response = await fetch("/api/admin/release", {
+      method: "POST",
+      credentials: "same-origin",
+      body: new FormData(form),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || "Publication impossible");
+    form.reset();
+    updateApkPreview(null);
+    document.getElementById("releaseNotesCount").textContent = "0 / 500";
+    success.textContent = `Version ${data.version} publiée avec succès.`;
+    await loadRelease();
+  } catch (publishError) {
+    error.textContent = publishError.message;
+  } finally {
+    submit.disabled = false;
+    submit.classList.remove("loading");
+  }
+}
+
 async function login(event) {
   event.preventDefault();
   const errorEl = document.getElementById("loginError");
@@ -198,6 +340,7 @@ async function login(event) {
     document.getElementById("loginPanel").hidden = true;
     document.getElementById("dashboardPanel").hidden = false;
     await loadStats();
+    await loadRelease();
   } catch (error) {
     errorEl.textContent = error.message;
   } finally {
@@ -253,6 +396,8 @@ window.addEventListener("resize", function () {
 });
 
 document.getElementById("loginForm").addEventListener("submit", login);
+document.getElementById("releaseForm").addEventListener("submit", publishRelease);
+setupReleaseForm();
 document.getElementById("adminThemeToggle").addEventListener("click", function () {
   const nextTheme =
     document.documentElement.dataset.theme === "dark" ? "light" : "dark";
@@ -274,3 +419,4 @@ document.querySelectorAll("[data-chart-range]").forEach((select) => {
 window.addEventListener("hashchange", showViewFromHash);
 showViewFromHash();
 loadStats();
+loadRelease().catch((error) => console.error("Erreur de chargement de la release :", error));

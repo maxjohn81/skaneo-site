@@ -1,0 +1,92 @@
+import { put } from "@vercel/blob";
+import formidable from "formidable";
+import { createReadStream } from "node:fs";
+import { isAuthenticated } from "../lib/auth.js";
+import {
+  getLatestRelease,
+  getReleaseHistory,
+  incrementVersion,
+  INITIAL_RELEASE_VERSION,
+  RELEASE_KEY,
+} from "../lib/release.js";
+import { redis } from "../lib/redis.js";
+
+export const config = { api: { bodyParser: false } };
+const MAX_APK_SIZE = 200 * 1024 * 1024;
+
+function firstField(value) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+function getUploadedFile(value) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default async function handler(req, res) {
+  if (req.method === "GET") {
+    if (!(await isAuthenticated(req))) {
+      return res.status(401).json({ error: "Authentification requise" });
+    }
+    return res.status(200).json({
+      latest: await getLatestRelease(),
+      history: await getReleaseHistory(),
+    });
+  }
+
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Méthode non autorisée" });
+  }
+  if (!(await isAuthenticated(req))) {
+    return res.status(401).json({ error: "Authentification requise" });
+  }
+
+  const form = formidable({ maxFileSize: MAX_APK_SIZE, multiples: false });
+  let fields;
+  let files;
+  try {
+    [fields, files] = await form.parse(req);
+  } catch (error) {
+    const message = error?.code === "ETOOBIG"
+      ? "Le fichier APK ne doit pas dépasser 200 Mo."
+      : "Impossible de lire le fichier envoyé.";
+    return res.status(400).json({ error: message });
+  }
+  const apk = getUploadedFile(files.apk);
+
+  if (!apk || !apk.filepath) {
+    return res.status(400).json({ error: "Sélectionne un fichier APK." });
+  }
+  if (!apk.originalFilename?.toLowerCase().endsWith(".apk")) {
+    return res.status(400).json({ error: "Le fichier doit être au format APK." });
+  }
+
+  const current = await getLatestRelease();
+  const version = incrementVersion(current?.version || INITIAL_RELEASE_VERSION);
+  const filename = `Skaneo-v${version}.apk`;
+  let blob;
+  try {
+    blob = await put(`releases/${filename}`, createReadStream(apk.filepath), {
+      access: "public",
+      addRandomSuffix: false,
+      contentType: "application/vnd.android.package-archive",
+    });
+  } catch (error) {
+    console.error("APK blob upload failed", error);
+    return res.status(502).json({ error: "Le stockage de l'APK est indisponible." });
+  }
+  const notes = String(firstField(fields.notes) || "").trim();
+  const release = {
+    version,
+    url: blob.url,
+    filename,
+    notes,
+    size: apk.size,
+    publishedAt: new Date().toISOString(),
+  };
+
+  await redis.set(RELEASE_KEY, JSON.stringify(release));
+  await redis.lpush("mobile:release-history", JSON.stringify(release));
+  await redis.ltrim("mobile:release-history", 0, 19);
+
+  return res.status(201).json(release);
+}

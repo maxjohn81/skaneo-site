@@ -126,6 +126,12 @@
                 >Utilisateurs</span
               ></a
             >
+            <a class="nav-link" href="#releases" data-view-link="releases"
+              ><span
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" /></svg
+                >Versions</span
+              ></a>
             <a class="nav-link" href="#settings" data-view-link="settings"
               ><span
                 ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -378,6 +384,77 @@
               La gestion des utilisateurs arrivera dans une prochaine mise à
               jour de Skaneo.
             </p>
+          </section>
+          <section class="admin-view" data-view="releases" hidden>
+            <header class="dashboard-header">
+              <div>
+                <p class="eyebrow">Publication</p>
+                <h1>Versions mobiles</h1>
+                <p class="page-description">
+                  Publiez un APK et rendez-le disponible automatiquement dans l'application.
+                </p>
+              </div>
+            </header>
+            <section class="release-grid">
+              <div class="panel">
+                <div class="panel-heading">
+                  <div>
+                    <h2>Dernière version</h2>
+                    <p id="releaseStatus">Chargement…</p>
+                  </div>
+                </div>
+                <div class="release-summary">
+                  <strong id="releaseVersion">—</strong>
+                  <span id="releaseFilename">—</span>
+                  <a id="releaseDownload" href="#" target="_blank" rel="noreferrer">Ouvrir le téléchargement</a>
+                </div>
+                <div class="release-history">
+                  <h3>Historique des publications</h3>
+                  <ul id="releaseHistory">
+                    <li>Aucune publication dynamique.</li>
+                  </ul>
+                </div>
+              </div>
+              <form id="releaseForm" class="panel release-form">
+                <div class="panel-heading">
+                  <div>
+                    <h2>Publier une mise à jour</h2>
+                    <p>La version suivante sera générée automatiquement.</p>
+                  </div>
+                </div>
+                <div class="release-next-version">
+                  <span>Prochaine version</span>
+                  <strong id="releaseNextVersion">—</strong>
+                </div>
+                <label for="apkFile">Fichier APK</label>
+                <label id="apkDropzone" class="apk-dropzone" for="apkFile">
+                  <input id="apkFile" name="apk" type="file" accept=".apk,application/vnd.android.package-archive" required />
+                  <span class="apk-dropzone-icon" aria-hidden="true">↑</span>
+                  <strong>Dépose ton APK ici</strong>
+                  <span>ou clique pour parcourir tes fichiers</span>
+                  <small>Format APK · 200 Mo maximum</small>
+                </label>
+                <div id="apkPreview" class="apk-preview" hidden>
+                  <span class="apk-file-icon" aria-hidden="true">APK</span>
+                  <span class="apk-file-details">
+                    <strong id="apkFileName">—</strong>
+                    <small id="apkFileSize">—</small>
+                  </span>
+                  <button id="apkRemove" class="apk-remove" type="button" aria-label="Retirer le fichier">×</button>
+                </div>
+                <div class="field-heading">
+                  <label for="releaseNotes">Notes de version</label>
+                  <span id="releaseNotesCount">0 / 500</span>
+                </div>
+                <textarea id="releaseNotes" name="notes" rows="5" maxlength="500" placeholder="Décris les nouveautés, corrections et améliorations…"></textarea>
+                <p id="releaseError" class="form-error" role="alert"></p>
+                <p id="releaseSuccess" class="form-success" role="status"></p>
+                <button id="releaseSubmit" class="button-primary" type="submit">
+                  <span>Publier la mise à jour</span>
+                  <span class="release-button-loader" aria-hidden="true"></span>
+                </button>
+              </form>
+            </section>
           </section>
           <section
             class="admin-view unavailable-view"
