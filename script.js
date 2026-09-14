@@ -49,10 +49,10 @@
     if (!downloadsEl) return;
 
     try {
-      const response = await fetch("/api/public-stats");
+      const response = await fetch("/api/version", { cache: "no-store" });
       const data = await response.json();
 
-      downloadsEl.textContent = data.downloads;
+      downloadsEl.textContent = Number(data.downloads || 0).toLocaleString("fr-FR");
     } catch (error) {
       console.error(error);
     }
