@@ -282,26 +282,6 @@ async function loadRelease() {
   });
 }
 
-function uploadReleaseWithProgress(payload, onProgress) {
-  return new Promise((resolve, reject) => {
-    const request = new XMLHttpRequest();
-    request.open("POST", "/api/admin/release");
-    request.withCredentials = true;
-    request.upload.addEventListener("progress", (event) => {
-      if (event.lengthComputable) onProgress(Math.round((event.loaded / event.total) * 100));
-    });
-    request.addEventListener("load", () => {
-      let data = {};
-      try { data = JSON.parse(request.responseText); } catch {}
-      if (request.status >= 200 && request.status < 300) resolve(data);
-      else reject(new Error(data.error || "Publication impossible"));
-    });
-    request.addEventListener("error", () => reject(new Error("Erreur réseau pendant l'upload.")));
-    request.addEventListener("abort", () => reject(new Error("Upload annulé.")));
-    request.send(payload);
-  });
-}
-
 function closeReleaseModal() {
   document.getElementById("releaseSuccessModal").hidden = true;
 }
@@ -321,12 +301,33 @@ async function publishRelease(event) {
     const file = document.getElementById("apkFile").files[0];
     if (!file) throw new Error("Sélectionne un fichier APK.");
 
-    const payload = new FormData();
-    payload.append("apk", file);
-    payload.append("notes", document.getElementById("releaseNotes").value);
-    const data = await uploadReleaseWithProgress(payload, (percent) => {
-      submit.querySelector("span").textContent = `Upload ${percent} %`;
+    const currentVersion = document.getElementById("releaseVersion").textContent;
+    const version = nextVersion(currentVersion);
+    const filename = `Skaneo-v${version}.apk`;
+    const { upload } = await import("https://cdn.jsdelivr.net/npm/@vercel/blob@2.8.0/client/+esm");
+    const blob = await upload(`releases/${filename}`, file, {
+      access: "public",
+      handleUploadUrl: "/api/admin/blob-upload",
+      multipart: false,
+      contentType: "application/vnd.android.package-archive",
+      onUploadProgress: (progress) => {
+        submit.querySelector("span").textContent = `Upload ${Math.round(progress.percentage)} %`;
+      },
     });
+    submit.querySelector("span").textContent = "Finalisation…";
+    const response = await fetch("/api/admin/release", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        blobUrl: blob.url,
+        filename,
+        notes: document.getElementById("releaseNotes").value,
+        size: file.size,
+      }),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || "Publication impossible");
     form.reset();
     updateApkPreview(null);
     document.getElementById("releaseNotesCount").textContent = "0 / 500";
