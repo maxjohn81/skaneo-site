@@ -62,14 +62,18 @@
 
   async function loadLatestRelease() {
     var note = document.getElementById("new-release-note");
-    var versionEl = document.getElementById("current-version");
-    if (!note && !versionEl) return;
+    var versionEls = document.querySelectorAll("[data-app-version]");
+    if (!note && !versionEls.length) return;
 
     try {
       var response = await fetch("/api/version", { cache: "no-store" });
       if (!response.ok) return;
       var release = await response.json();
-      if (versionEl && release.version) versionEl.textContent = release.version;
+      if (release.version) {
+        versionEls.forEach(function (element) {
+          element.textContent = release.version;
+        });
+      }
       if (!note || !release.publishedAt || release.source === "initial") return;
 
       var publishedAt = Date.parse(release.publishedAt);
