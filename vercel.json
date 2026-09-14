@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/admin/blob-upload.js": {
+      "includeFiles": "node_modules/@vercel/blob/dist/**"
+    }
+  },
   "headers": [
     {
       "source": "/admin/(.*)",

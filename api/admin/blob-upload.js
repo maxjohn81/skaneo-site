@@ -1,4 +1,5 @@
 import { isAuthenticated } from "../lib/auth.js";
+import { handleUpload } from "@vercel/blob/client";
 
 export const config = { api: { bodyParser: false } };
 
@@ -17,7 +18,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { handleUpload } = await import("@vercel/blob/dist/client.js");
     const body = await readJson(req);
     const response = await handleUpload({
       body,
