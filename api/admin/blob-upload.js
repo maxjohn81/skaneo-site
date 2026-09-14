@@ -9,7 +9,6 @@ async function readJson(req) {
   for await (const chunk of req) raw += chunk;
   return JSON.parse(raw);
 }
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Méthode non autorisée" });
