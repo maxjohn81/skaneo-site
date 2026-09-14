@@ -72,11 +72,12 @@ export default async function handler(req, res) {
 
     const release = {
       version,
-      url: blobUrl,
+      url: `${String(req.headers["x-forwarded-proto"] || "https").split(",")[0]}://${String(req.headers["x-forwarded-host"] || req.headers.host).split(",")[0]}/api/download`,
       filename,
       notes: typeof notes === "string" ? notes.trim().slice(0, 500) : "",
       size,
       publishedAt: new Date().toISOString(),
+      blobUrl,
     };
     await redis.set(RELEASE_KEY, JSON.stringify(release));
     await redis.lpush("mobile:release-history", JSON.stringify(release));
