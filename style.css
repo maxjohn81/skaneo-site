@@ -427,6 +427,54 @@ h4 {
   margin-bottom: 28px;
 }
 
+.hero-download-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.new-release-note {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  z-index: 2;
+  white-space: nowrap;
+  padding: 7px 13px;
+  border: 1px solid rgba(255, 107, 0, 0.22);
+  border-radius: var(--radius-pill);
+  color: #a34800;
+  background: #fff4df;
+  box-shadow: 0 8px 20px rgba(255, 107, 0, 0.12);
+  font-size: 10px;
+  font-weight: 700;
+  transform: translateX(-50%);
+  animation: release-note-float 2.8s ease-in-out infinite;
+}
+
+.new-release-note::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  width: 11px;
+  height: 11px;
+  border-right: 1px solid rgba(255, 107, 0, 0.22);
+  border-bottom: 1px solid rgba(255, 107, 0, 0.22);
+  background: #fff4df;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+@keyframes release-note-float {
+  0%, 100% { transform: translateX(-50%) translateY(0) rotate(-1deg); }
+  50% { transform: translateX(-50%) translateY(-5px) rotate(1deg); }
+}
+
+:root[data-theme="dark"] .new-release-note,
+:root[data-theme="dark"] .new-release-note::after {
+  border-color: rgba(255, 191, 0, 0.3);
+  color: #ffd978;
+  background: #332711;
+}
+
 .hero-stats {
   display: flex;
   gap: 28px;

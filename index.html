@@ -151,7 +151,11 @@
               malgache, 100% hors ligne, sans compte.
             </p>
             <div class="hero-actions">
-              <a href="/api/download" class="btn btn-primary" data-download>
+              <div class="hero-download-wrap">
+                <div id="new-release-note" class="new-release-note" hidden>
+                  <span>Nouvelle mise à jour disponible ✨</span>
+                </div>
+                <a href="/api/download" class="btn btn-primary" data-download>
                 <svg
                   class="btn-icon"
                   width="20"
@@ -168,14 +172,15 @@
                   <path d="m7 10 5 5 5-5" />
                 </svg>
                 Télécharger l'APK
-              </a>
+                </a>
+              </div>
               <a href="#features" class="btn btn-ghost">En savoir plus</a>
             </div>
             <div class="hero-stats">
               <div>
                 <strong id="downloads">—</strong><span>Téléchargements</span>
               </div>
-              <div><strong>1.0.3</strong><span>Version actuelle</span></div>
+              <div><strong id="current-version">1.0.3</strong><span>Version actuelle</span></div>
               <div>
                 <strong>0 Mo réseau</strong><span>Fonctionne hors ligne</span>
               </div>

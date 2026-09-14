@@ -60,6 +60,28 @@
 
   loadDownloads();
 
+  async function loadLatestRelease() {
+    var note = document.getElementById("new-release-note");
+    var versionEl = document.getElementById("current-version");
+    if (!note && !versionEl) return;
+
+    try {
+      var response = await fetch("/api/version", { cache: "no-store" });
+      if (!response.ok) return;
+      var release = await response.json();
+      if (versionEl && release.version) versionEl.textContent = release.version;
+      if (!note || !release.publishedAt || release.source === "initial") return;
+
+      var publishedAt = Date.parse(release.publishedAt);
+      var oneWeek = 7 * 24 * 60 * 60 * 1000;
+      note.hidden = !Number.isFinite(publishedAt) || Date.now() - publishedAt >= oneWeek;
+    } catch (error) {
+      console.error("Impossible de charger la dernière version :", error);
+    }
+  }
+
+  loadLatestRelease();
+
   /* -------------------------------------------------------
    * 2. Mobile nav toggle
    * ----------------------------------------------------- */

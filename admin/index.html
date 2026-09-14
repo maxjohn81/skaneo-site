@@ -478,6 +478,16 @@
         </main>
       </div>
     </div>
+    <div id="releaseSuccessModal" class="release-modal" hidden>
+      <div class="release-modal-backdrop" data-close-release-modal></div>
+      <section class="release-modal-card" role="dialog" aria-modal="true" aria-labelledby="releaseModalTitle">
+        <button class="release-modal-close" type="button" aria-label="Fermer" data-close-release-modal>×</button>
+        <div class="release-modal-icon" aria-hidden="true">✓</div>
+        <h2 id="releaseModalTitle">Publication réussie</h2>
+        <p id="releaseModalMessage">La nouvelle version est maintenant disponible.</p>
+        <button id="releaseModalConfirm" class="button-primary" type="button">Parfait</button>
+      </section>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script src="/admin/app.js"></script>

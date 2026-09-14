@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@upstash/redis": "^1.38.2",
-    "@vercel/blob": "^2.8.0"
+    "@vercel/blob": "^2.8.0",
+    "formidable": "^3.5.4"
   }
 }

@@ -282,6 +282,30 @@ async function loadRelease() {
   });
 }
 
+function uploadReleaseWithProgress(payload, onProgress) {
+  return new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest();
+    request.open("POST", "/api/admin/release");
+    request.withCredentials = true;
+    request.upload.addEventListener("progress", (event) => {
+      if (event.lengthComputable) onProgress(Math.round((event.loaded / event.total) * 100));
+    });
+    request.addEventListener("load", () => {
+      let data = {};
+      try { data = JSON.parse(request.responseText); } catch {}
+      if (request.status >= 200 && request.status < 300) resolve(data);
+      else reject(new Error(data.error || "Publication impossible"));
+    });
+    request.addEventListener("error", () => reject(new Error("Erreur réseau pendant l'upload.")));
+    request.addEventListener("abort", () => reject(new Error("Upload annulé.")));
+    request.send(payload);
+  });
+}
+
+function closeReleaseModal() {
+  document.getElementById("releaseSuccessModal").hidden = true;
+}
+
 async function publishRelease(event) {
   event.preventDefault();
   const form = document.getElementById("releaseForm");
@@ -297,37 +321,19 @@ async function publishRelease(event) {
     const file = document.getElementById("apkFile").files[0];
     if (!file) throw new Error("Sélectionne un fichier APK.");
 
-    const currentVersion = document.getElementById("releaseVersion").textContent;
-    const version = nextVersion(currentVersion);
-    const filename = `Skaneo-v${version}.apk`;
-    const { upload } = await import("https://cdn.jsdelivr.net/npm/@vercel/blob@2.8.0/client/+esm");
-    const uploadResult = await upload(`releases/${filename}`, file, {
-      access: "public",
-      handleUploadUrl: "/api/admin/blob-upload",
-      multipart: false,
-      onUploadProgress: (progress) => {
-        submit.querySelector("span").textContent = `Upload ${Math.round(progress.percentage)} %`;
-      },
+    const payload = new FormData();
+    payload.append("apk", file);
+    payload.append("notes", document.getElementById("releaseNotes").value);
+    const data = await uploadReleaseWithProgress(payload, (percent) => {
+      submit.querySelector("span").textContent = `Upload ${percent} %`;
     });
-
-    const response = await fetch("/api/admin/release", {
-      method: "POST",
-      credentials: "same-origin",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        blobUrl: uploadResult.url,
-        filename,
-        notes: document.getElementById("releaseNotes").value,
-        size: file.size,
-      }),
-    });
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.error || "Publication impossible");
     form.reset();
     updateApkPreview(null);
     document.getElementById("releaseNotesCount").textContent = "0 / 500";
-    success.textContent = `Version ${data.version} publiée avec succès.`;
     await loadRelease();
+    document.getElementById("releaseModalMessage").textContent =
+      `La version ${data.version} est bien publiée et affichée dans l'administration.`;
+    document.getElementById("releaseSuccessModal").hidden = false;
   } catch (publishError) {
     error.textContent = publishError.message;
   } finally {
@@ -335,6 +341,7 @@ async function publishRelease(event) {
     submit.querySelector("span").textContent = "Publier la mise à jour";
     submit.classList.remove("loading");
   }
+
 }
 
 async function login(event) {
@@ -420,6 +427,10 @@ window.addEventListener("resize", function () {
 
 document.getElementById("loginForm").addEventListener("submit", login);
 document.getElementById("releaseForm").addEventListener("submit", publishRelease);
+document.querySelectorAll("[data-close-release-modal]").forEach((element) => {
+  element.addEventListener("click", closeReleaseModal);
+});
+document.getElementById("releaseModalConfirm").addEventListener("click", closeReleaseModal);
 setupReleaseForm();
 document.getElementById("adminThemeToggle").addEventListener("click", function () {
   const nextTheme =
@@ -440,6 +451,21 @@ document.querySelectorAll("[data-chart-range]").forEach((select) => {
   });
 });
 window.addEventListener("hashchange", showViewFromHash);
+async function restoreAdminSession() {
+  try {
+    const response = await fetch("/api/admin/release", { credentials: "same-origin" });
+    if (response.status === 401) {
+      document.getElementById("dashboardPanel").hidden = true;
+      document.getElementById("loginPanel").hidden = false;
+      return;
+    }
+    if (!response.ok) throw new Error("Session admin indisponible");
+    document.getElementById("loginPanel").hidden = true;
+    document.getElementById("dashboardPanel").hidden = false;
+    await Promise.all([loadStats(), loadRelease()]);
+  } catch (error) {
+    console.error("Erreur de restauration de session :", error);
+  }
+}
 showViewFromHash();
-loadStats();
-loadRelease().catch((error) => console.error("Erreur de chargement de la release :", error));
+restoreAdminSession();
