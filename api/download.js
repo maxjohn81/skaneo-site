@@ -14,11 +14,8 @@ export default async function handler(req, res) {
     return res.status(404).json({ error: "Aucun APK n'est encore publié" });
   }
 
-  if (!release.blobUrl) {
-    return res.redirect(release.url);
-  }
-
-  try {
+  if (release.blobUrl && release.blobUrl.includes(".private.blob.")) {
+    try {
     const result = await get(release.blobUrl, {
       access: "private",
       token: process.env.BLOB_READ_WRITE_TOKEN,
@@ -36,12 +33,15 @@ export default async function handler(req, res) {
     );
     res.setHeader("Cache-Control", "public, max-age=300");
     Readable.fromWeb(result.stream).pipe(res);
-  } catch (error) {
+    } catch (error) {
     console.error("Private APK download failed", {
       name: error?.name,
       message: error?.message,
       status: error?.status,
     });
     return res.status(502).json({ error: "Le téléchargement de l'APK est indisponible" });
+    }
   }
+
+  return res.redirect(release.blobUrl || release.url);
 }

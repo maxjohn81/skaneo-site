@@ -133,7 +133,8 @@ export default async function handler(req, res) {
 
   const release = {
     version,
-    url: blob.url,
+    url: `${String(req.headers["x-forwarded-proto"] || "https").split(",")[0]}://${req.headers.host}/api/download`,
+    blobUrl: blob.url,
     filename,
     notes: String(firstField(fields.notes) || "").trim().slice(0, 500),
     size: apk.size,
